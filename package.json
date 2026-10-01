@@ -1,0 +1,14 @@
+{
+  "name": "@matrip328115/rail",
+  "version": "1.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/matrip328115/rail.git"
+  },
+  "homepage": "https://github.com/matrip328115/rail#readme",
+  "bugs": {
+    "url": "https://github.com/matrip328115/rail/issues"
+  },
+  "author": "matrip328115",
+  "license": "MIT"
+}
