@@ -1,0 +1,134 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Rail — Playground</title>
+<style>
+  body{background:#0A0C0F;color:#E9EEF4;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    margin:0;padding:20px;max-width:640px;line-height:1.5}
+  h1{font-size:18px;margin:0 0 4px;font-weight:700}
+  .sub{color:#5E6B7A;font-size:13px;margin-bottom:28px}
+  h3{font-size:11px;text-transform:uppercase;letter-spacing:.1em;
+    color:#5E6B7A;margin:28px 0 8px;font-weight:700}
+  h3:first-of-type{margin-top:0}
+  .output{margin-top:6px;font-size:12px;color:#8B98A8;
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+    background:#111519;border:1px solid #232B34;border-radius:8px;
+    padding:8px 10px;min-height:20px}
+  .btn{display:inline-block;padding:6px 12px;border-radius:8px;
+    border:1px solid #2F3945;background:#171C22;color:#E9EEF4;
+    font-size:12px;font-weight:600;cursor:pointer;margin-right:6px;margin-top:8px}
+  .btn:hover{border-color:#C3F53C;color:#C3F53C}
+</style>
+</head>
+<body>
+
+<h1>Rail Playground</h1>
+<div class="sub">Interactive demo of <code>rail.js</code> v1.0.1</div>
+
+<h3>1. Simple — text values</h3>
+<div id="d1"></div>
+<div class="output" id="o1">tap a chip…</div>
+
+<h3>2. From raw data — auto dedupe + count</h3>
+<div id="d2"></div>
+<div class="output" id="o2">tap a chip…</div>
+
+<h3>3. Multi-select tag picker</h3>
+<div id="d3"></div>
+<div class="output" id="o3">tap chips to toggle…</div>
+
+<h3>4. Async loader (800 ms delay)</h3>
+<div id="d4"></div>
+
+<h3>5. Programmatic updates</h3>
+<div id="d5"></div>
+<button class="btn" id="btnRefresh">↺ Regenerate items</button>
+<button class="btn" id="btnClear">✕ Clear active</button>
+<div class="output" id="o5">click the buttons…</div>
+
+<h3>6. Custom accent color</h3>
+<div id="d6"></div>
+
+<script src="./rail.js"></script>
+<script>
+/* -------- shared data -------- */
+const rows = [
+  { person: 'Ram',      amount: 500 },
+  { person: 'Ram',      amount: 100 },
+  { person: 'Shyam',    amount: 200 },
+  { person: 'Raju',     amount: 300 },
+  { person: 'Ram',      amount: 50  },
+  { person: 'Pritam',   amount: 180 },
+  { person: 'Abhishek', amount: 900 },
+  { person: 'Shyam',    amount: 400 },
+];
+
+/* -------- 1. Simple -------- */
+Rail.create({
+  items: ['Ram','Shyam','Raju'].map(v => ({ value: v })),
+  onSelect: i => document.getElementById('o1').textContent = 'picked: ' + i.value,
+  onClear:  () => document.getElementById('o1').textContent = '(cleared)',
+}).mount('#d1');
+
+/* -------- 2. From data -------- */
+Rail.create({
+  items: Rail.fromData({ data: rows, key: 'person', sort: 'count' }),
+  onSelect: i => document.getElementById('o2').textContent =
+    `person: ${i.value} · count: ${i.count}`,
+  onClear: () => document.getElementById('o2').textContent = '(cleared)',
+}).mount('#d2');
+
+/* -------- 3. Multi-select -------- */
+Rail.create({
+  multiple: true,
+  active: ['Shyam'],
+  items: Rail.fromData({ data: rows, key: 'person' }),
+  onSelect: (i, r) => document.getElementById('o3').textContent = 'active: ' + JSON.stringify(r.getActive()),
+  onDeselect: (i, r) => document.getElementById('o3').textContent = 'active: ' + JSON.stringify(r.getActive()),
+}).mount('#d3');
+
+/* -------- 4. Async -------- */
+Rail.create({
+  loadItems: () => new Promise(res => setTimeout(() =>
+    res(Rail.fromData({ data: rows, key: 'person', sort: 'count' })), 800)),
+}).mount('#d4');
+
+/* -------- 5. Programmatic updates -------- */
+let r5 = Rail.create({
+  items: Rail.fromData({ data: rows, key: 'person' }),
+  active: 'Ram',
+  onSelect: i => document.getElementById('o5').textContent = 'active: ' + i.value,
+  onClear:  () => document.getElementById('o5').textContent = '(cleared)',
+}).mount('#d5');
+
+document.getElementById('btnRefresh').onclick = () => {
+  const pool = ['Alpha','Beta','Gamma','Delta','Epsilon'];
+  const items = pool.map(v => ({
+    value: v,
+    count: Math.floor(Math.random() * 20) + 1,
+  }));
+  r5.setItems(items);
+  document.getElementById('o5').textContent = 'setItems called → ' + items.length + ' items';
+};
+document.getElementById('btnClear').onclick = () => {
+  r5.setActive(null);
+  document.getElementById('o5').textContent = '(active cleared)';
+};
+
+/* -------- 6. Custom accent -------- */
+Rail.create({
+  accentColor: '#5CC8FF',
+  items: [
+    { value: 'Alert',   icon: '⚠', color: '#FF6B6B' },
+    { value: 'Warning', icon: '⚠', color: '#FFB84D' },
+    { value: 'Info',    icon: 'i', color: '#5CC8FF' },
+    { value: 'Success', icon: '✓', color: '#C3F53C' },
+  ],
+}).mount('#d6');
+</script>
+
+</body>
+</html>
