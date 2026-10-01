@@ -10,7 +10,7 @@ Rail.create({
 }).mount('#filters');
 ```
 
-[**Live demo**](https://matrip328115.github.io/rail/demo.html) · [Report bug](https://github.com/matrip328115/rail/issues)
+[**Live demo**](https://matrip328115.github.io/rail/demo.html) · [Report bug](https://github.com/matrip328115/rail/issues) · [Request feature](https://github.com/matrip328115/rail/issues)
 
 ---
 
@@ -35,17 +35,23 @@ Perfect for: **filters, tag pickers, recent-value rails, date/month navigation, 
 ### Option 1 — CDN
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/YOURNAME/rail@1.0.1/rail.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/matrip328115/rail@1.0.1/rail.js"></script>
+```
+
+Or with [unpkg](https://unpkg.com):
+
+```html
+<script src="https://unpkg.com/@matrip328115/rail@1.0.1/rail.js"></script>
 ```
 
 ### Option 2 — npm
 
 ```bash
-npm install @yourname/rail
+npm install @matrip328115/rail
 ```
 
 ```js
-import Rail from '@yourname/rail';
+import Rail from '@matrip328115/rail';
 ```
 
 ### Option 3 — Manual
@@ -384,6 +390,18 @@ If you need a filter bar, tag picker, or "recent values" rail — Rail is that.
 
 ---
 
+## Contributing
+
+Pull requests welcome. For major changes, please open an issue first to discuss what you'd like to change.
+
+1. Fork the repo
+2. Create your branch (`git checkout -b feature/amazing`)
+3. Commit changes (`git commit -m 'Add amazing feature'`)
+4. Push (`git push origin feature/amazing`)
+5. Open a pull request
+
+---
+
 ## License
 
-MIT © matrip328115
+MIT © 2025 [matrip328115](https://github.com/matrip328115)
