@@ -1,0 +1,6431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b0d10">
+<meta name="color-scheme" content="dark">
+<title>LASER DATA</title>
+
+<style>
+:root{
+  --bg:#0b0d10;
+  --surface:#11151a;
+  --surface2:#171c22;
+  --surface3:#1d232a;
+  --line:#29313a;
+  --text:#f1f4f7;
+  --muted:#9ca7b3;
+  --dim:#68737e;
+  --accent:#c7f35a;
+  --accent2:#8edb4c;
+  --danger:#ff6262;
+  --warn:#f2bd55;
+  --shadow:0 18px 55px rgba(0,0,0,.45);
+  --r:14px;
+  --top:58px;
+  --rail:64px;
+}
+
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
+
+html,body{
+  margin:0;
+  padding:0;
+  width:100%;
+  min-height:100%;
+  background:var(--bg);
+  color:var(--text);
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+
+body{
+  overflow-x:hidden;
+}
+
+button,
+input,
+select,
+textarea{
+  font:inherit;
+}
+
+button{
+  color:inherit;
+}
+
+button:active{
+  transform:translateY(1px);
+}
+
+.hidden{
+  display:none!important;
+}
+
+/* =========================================================
+   TOP BAR
+   ========================================================= */
+
+.topbar{
+  position:fixed;
+  left:0;
+  right:0;
+  top:0;
+  height:var(--top);
+  z-index:100;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:
+    env(safe-area-inset-top)
+    12px
+    0
+    12px;
+  background:rgba(11,13,16,.94);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line);
+}
+
+.topbar-title{
+  min-width:0;
+  flex:1;
+}
+
+.topbar-title .main{
+  font-size:15px;
+  font-weight:800;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.topbar-title .sub{
+  color:var(--dim);
+  font-size:9px;
+  margin-top:1px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.icon-btn{
+  width:36px;
+  height:36px;
+  border-radius:10px;
+  border:1px solid var(--line);
+  background:var(--surface);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:17px;
+  flex:none;
+}
+
+.icon-btn:hover{
+  border-color:var(--accent);
+}
+
+/* =========================================================
+   APP
+   ========================================================= */
+
+.app{
+  padding-top:var(--top);
+  min-height:100dvh;
+}
+
+.screen{
+  padding:14px 14px 100px;
+  max-width:1500px;
+  margin:auto;
+}
+
+.page-title{
+  font-size:22px;
+  font-weight:850;
+  letter-spacing:-.03em;
+  margin:6px 0 3px;
+}
+
+.page-subtitle{
+  color:var(--muted);
+  font-size:12px;
+  margin-bottom:18px;
+}
+
+.section-label{
+  color:var(--dim);
+  font-size:10px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.11em;
+  margin:20px 0 9px;
+}
+
+/* =========================================================
+   CARDS
+   ========================================================= */
+
+.card-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(230px,1fr));
+  gap:10px;
+}
+
+.card{
+  border:1px solid var(--line);
+  background:var(--surface);
+  border-radius:var(--r);
+  padding:14px;
+  box-shadow:0 4px 20px rgba(0,0,0,.14);
+}
+
+.card:active{
+  background:var(--surface2);
+}
+
+.card-head{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+}
+
+.card-icon{
+  width:40px;
+  height:40px;
+  border-radius:11px;
+  background:var(--surface3);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--accent);
+  font-weight:900;
+  flex:none;
+}
+
+.card-main{
+  min-width:0;
+  flex:1;
+}
+
+.card-name{
+  font-size:14px;
+  font-weight:800;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.card-meta{
+  color:var(--dim);
+  font-size:10px;
+  margin-top:3px;
+}
+
+.card-actions{
+  display:flex;
+  gap:6px;
+  margin-top:12px;
+}
+
+.small-btn{
+  padding:7px 9px;
+  border:1px solid var(--line);
+  background:var(--surface2);
+  border-radius:8px;
+  color:var(--muted);
+  font-size:10px;
+}
+
+.small-btn.danger{
+  color:var(--danger);
+}
+
+.small-btn.accent{
+  color:var(--accent);
+}
+
+/* =========================================================
+   TOOLBAR
+   ========================================================= */
+
+.toolbar{
+  display:flex;
+  gap:7px;
+  align-items:center;
+  margin-bottom:9px;
+  overflow-x:auto;
+  scrollbar-width:none;
+}
+
+.toolbar::-webkit-scrollbar{
+  display:none;
+}
+
+.tool-btn{
+  flex:none;
+  border:1px solid var(--line);
+  background:var(--surface);
+  color:var(--muted);
+  border-radius:9px;
+  padding:8px 11px;
+  font-size:11px;
+  font-weight:700;
+}
+
+.tool-btn.accent{
+  color:var(--accent);
+  border-color:rgba(199,243,90,.35);
+}
+
+.tool-btn.danger{
+  color:var(--danger);
+}
+
+/* =========================================================
+   TABLE TABS
+   ========================================================= */
+
+.table-tabs{
+  display:flex;
+  gap:7px;
+  overflow-x:auto;
+  padding-bottom:7px;
+  scrollbar-width:none;
+}
+
+.table-tabs::-webkit-scrollbar{
+  display:none;
+}
+
+.table-tab{
+  flex:none;
+  padding:8px 12px;
+  border-radius:9px;
+  border:1px solid var(--line);
+  background:var(--surface);
+  color:var(--muted);
+  font-size:11px;
+  font-weight:700;
+}
+
+.table-tab.active{
+  color:var(--accent);
+  background:rgba(199,243,90,.07);
+  border-color:rgba(199,243,90,.35);
+}
+
+/* =========================================================
+   SEARCH
+   ========================================================= */
+
+.search-wrap{
+  position:relative;
+  margin:8px 0;
+}
+
+.search-input{
+  width:100%;
+  height:42px;
+  border-radius:11px;
+  border:1px solid var(--line);
+  outline:none;
+  background:var(--surface);
+  color:var(--text);
+  padding:0 13px 0 38px;
+}
+
+.search-input:focus{
+  border-color:var(--accent);
+}
+
+.search-icon{
+  position:absolute;
+  left:13px;
+  top:50%;
+  transform:translateY(-50%);
+  color:var(--dim);
+}
+
+/* =========================================================
+   RAILS
+   ========================================================= */
+
+.rail{
+  display:flex;
+  gap:6px;
+  overflow-x:auto;
+  scrollbar-width:none;
+  padding:4px 0 8px;
+}
+
+.rail::-webkit-scrollbar{
+  display:none;
+}
+
+.rail-item{
+  flex:none;
+  min-width:52px;
+  padding:7px 9px;
+  border-radius:9px;
+  border:1px solid var(--line);
+  background:var(--surface);
+  color:var(--muted);
+  text-align:center;
+  font-size:10px;
+  font-weight:750;
+}
+
+.rail-item.active{
+  color:var(--accent);
+  border-color:rgba(199,243,90,.38);
+  background:rgba(199,243,90,.07);
+}
+
+.date-rail .rail-item{
+  min-width:58px;
+}
+
+.date-rail .day{
+  display:block;
+  font-size:12px;
+}
+
+.date-rail .dow{
+  display:block;
+  color:var(--dim);
+  font-size:8px;
+  margin-top:2px;
+}
+
+/* =========================================================
+   TABLE
+   ========================================================= */
+
+.table-box{
+  border:1px solid var(--line);
+  border-radius:var(--r);
+  overflow:hidden;
+  background:var(--surface);
+}
+
+.table-scroll-x{
+  width:100%;
+  overflow:auto;
+  -webkit-overflow-scrolling:touch;
+}
+
+table.dt{
+  border-collapse:separate;
+  border-spacing:0;
+  width:100%;
+  min-width:max-content;
+  font-size:11px;
+}
+
+.dt th,
+.dt td{
+  padding:9px 10px;
+  border-right:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+  vertical-align:middle;
+  white-space:nowrap;
+}
+
+.dt th:last-child,
+.dt td:last-child{
+  border-right:0;
+}
+
+.dt thead th{
+  background:var(--surface2);
+  color:var(--muted);
+  font-size:9px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  position:sticky;
+  top:0;
+  z-index:5;
+}
+
+.dt tbody tr{
+  background:var(--surface);
+}
+
+.dt tbody tr:hover{
+  background:var(--surface2);
+}
+
+.dt tbody tr.selected{
+  background:rgba(199,243,90,.05);
+}
+
+.col-idx{
+  min-width:42px;
+  width:42px;
+  text-align:center;
+  color:var(--dim);
+}
+
+.date-col{
+  position:sticky;
+  left:42px;
+  z-index:4;
+  background:var(--surface2);
+  min-width:115px;
+}
+
+.dt tbody .date-col{
+  background:var(--surface);
+}
+
+.dt tbody tr:hover .date-col{
+  background:var(--surface2);
+}
+
+.dt tbody tr.selected .date-col{
+  background:rgba(199,243,90,.06);
+}
+
+.date-main{
+  font-variant-numeric:tabular-nums;
+  font-weight:750;
+}
+
+.date-sub{
+  display:block;
+  color:var(--dim);
+  font-size:8px;
+  margin-top:2px;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+}
+
+.hdr{
+  display:flex;
+  gap:6px;
+  align-items:center;
+}
+
+.sort-ind{
+  color:var(--accent);
+}
+
+.num-cell{
+  text-align:right;
+  font-variant-numeric:tabular-nums;
+}
+
+.cell-empty{
+  color:var(--dim);
+}
+
+.link-chip{
+  display:inline-flex;
+  align-items:center;
+  padding:4px 7px;
+  border-radius:7px;
+  border:1px solid var(--line);
+  background:var(--surface2);
+  color:var(--muted);
+  font-size:10px;
+}
+
+.row-actions{
+  display:flex;
+  gap:5px;
+}
+
+.row-action{
+  width:28px;
+  height:28px;
+  border-radius:7px;
+  border:1px solid var(--line);
+  background:var(--surface2);
+  color:var(--muted);
+}
+
+.row-action.danger{
+  color:var(--danger);
+}
+
+.inline-edit{
+  width:100%;
+  min-width:80px;
+  border:1px solid var(--accent);
+  outline:none;
+  border-radius:6px;
+  padding:5px 6px;
+  background:var(--bg);
+  color:var(--text);
+}
+
+.total-row td{
+  background:var(--surface2);
+  font-weight:800;
+}
+
+/* =========================================================
+   EMPTY
+   ========================================================= */
+
+.empty{
+  border:1px dashed var(--line);
+  border-radius:var(--r);
+  padding:30px 18px;
+  text-align:center;
+  color:var(--muted);
+}
+
+.empty .big{
+  font-size:28px;
+  margin-bottom:8px;
+}
+
+.empty .title{
+  font-size:14px;
+  font-weight:800;
+}
+
+.empty .sub{
+  font-size:11px;
+  color:var(--dim);
+  margin-top:4px;
+}
+
+/* =========================================================
+   FAB
+   ========================================================= */
+
+.fab{
+  position:fixed;
+  right:16px;
+  bottom:
+    calc(18px + env(safe-area-inset-bottom));
+  z-index:80;
+  width:54px;
+  height:54px;
+  border:0;
+  border-radius:17px;
+  background:var(--accent);
+  color:#111;
+  font-size:25px;
+  font-weight:900;
+  box-shadow:0 10px 30px rgba(0,0,0,.35);
+}
+
+/* =========================================================
+   SHEET
+   ========================================================= */
+
+.sheet-backdrop{
+  position:fixed;
+  inset:0;
+  z-index:200;
+  background:rgba(0,0,0,.62);
+  display:none;
+  align-items:flex-end;
+}
+
+.sheet-backdrop.show{
+  display:flex;
+}
+
+.sheet{
+  width:100%;
+  max-height:92dvh;
+  background:var(--surface);
+  border-radius:20px 20px 0 0;
+  box-shadow:var(--shadow);
+  overflow:hidden;
+}
+
+.sheet-handle{
+  width:42px;
+  height:4px;
+  border-radius:4px;
+  background:var(--line);
+  margin:8px auto 5px;
+}
+
+.sheet-head{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:9px 14px;
+  border-bottom:1px solid var(--line);
+}
+
+.sheet-title{
+  flex:1;
+  font-size:15px;
+  font-weight:850;
+}
+
+.sheet-body{
+  padding:14px;
+  overflow:auto;
+  max-height:calc(92dvh - 110px);
+}
+
+.sheet-footer{
+  display:flex;
+  gap:8px;
+  padding:10px 14px calc(10px + env(safe-area-inset-bottom));
+  border-top:1px solid var(--line);
+}
+
+.primary-btn{
+  flex:1;
+  height:43px;
+  border:0;
+  border-radius:10px;
+  background:var(--accent);
+  color:#111;
+  font-weight:850;
+}
+
+.secondary-btn{
+  flex:1;
+  height:43px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:var(--surface2);
+  color:var(--muted);
+  font-weight:750;
+}
+
+/* =========================================================
+   FORM
+   ========================================================= */
+
+.field{
+  margin-bottom:14px;
+}
+
+.field-label{
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+  margin-bottom:6px;
+  color:var(--muted);
+  font-size:10px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+
+.field-type{
+  color:var(--dim);
+  font-size:8px;
+}
+
+.txtin,
+.valin,
+.selectin{
+  width:100%;
+  min-height:43px;
+  border:1px solid var(--line);
+  outline:none;
+  border-radius:10px;
+  background:var(--surface2);
+  color:var(--text);
+  padding:10px 11px;
+}
+
+.txtin:focus,
+.valin:focus,
+.selectin:focus{
+  border-color:var(--accent);
+}
+
+textarea.txtin{
+  min-height:90px;
+  resize:vertical;
+}
+
+.valin{
+  text-align:right;
+  font-variant-numeric:tabular-nums;
+}
+
+.form-date{
+  display:flex;
+  gap:7px;
+}
+
+.form-date input{
+  flex:1;
+}
+
+/* =========================================================
+   KEYBOARD RAIL
+   ========================================================= */
+
+.keyboard-rail{
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:0;
+  z-index:180;
+  display:none;
+  background:rgba(17,21,26,.97);
+  backdrop-filter:blur(15px);
+  border-top:1px solid var(--line);
+  padding:
+    5px 10px
+    calc(6px + env(safe-area-inset-bottom));
+}
+
+.keyboard-rail.show{
+  display:block;
+}
+
+.kr-inner{
+  max-width:1000px;
+  margin:auto;
+}
+
+.kr-label{
+  color:var(--dim);
+  font-size:8px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+  margin:0 2px 4px;
+}
+
+.kr-scroll{
+  display:flex;
+  gap:6px;
+  overflow-x:auto;
+  scrollbar-width:none;
+}
+
+.kr-scroll::-webkit-scrollbar{
+  display:none;
+}
+
+.kr-chip{
+  flex:none;
+  min-height:34px;
+  border:1px solid var(--line);
+  background:var(--surface2);
+  border-radius:9px;
+  padding:0 10px;
+  color:var(--muted);
+  font-size:11px;
+  font-weight:650;
+}
+
+.kr-chip.active{
+  color:var(--accent);
+  border-color:var(--accent);
+}
+
+.history-empty{
+  color:var(--dim);
+  font-size:11px;
+  padding:8px 4px;
+}
+
+/* =========================================================
+   COLUMN MANAGER
+   ========================================================= */
+
+.column-manager{
+  margin-top:10px;
+  padding:12px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:var(--surface2);
+}
+
+.column-manager-title{
+  color:var(--dim);
+  font-size:9px;
+  font-weight:850;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+  margin-bottom:8px;
+}
+
+.column-manager-row{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  padding:8px 0;
+  border-bottom:1px solid var(--line);
+}
+
+.column-manager-row:last-child{
+  border-bottom:0;
+}
+
+.cm-name{
+  flex:1;
+  min-width:0;
+}
+
+.cm-name input{
+  width:100%;
+  min-height:36px;
+  border:1px solid var(--line);
+  background:var(--surface);
+  color:var(--text);
+  border-radius:8px;
+  padding:7px;
+  outline:none;
+}
+
+.cm-name input:focus{
+  border-color:var(--accent);
+}
+
+.cm-type{
+  color:var(--dim);
+  font-size:9px;
+  text-transform:uppercase;
+  min-width:45px;
+}
+
+.cm-btn{
+  width:30px;
+  height:30px;
+  border:1px solid var(--line);
+  border-radius:7px;
+  background:var(--surface);
+  color:var(--muted);
+}
+
+.cm-btn.danger{
+  color:var(--danger);
+}
+
+.add-column-box{
+  margin-top:14px;
+  padding-top:14px;
+  border-top:1px solid var(--line);
+}
+
+.add-column-grid{
+  display:grid;
+  grid-template-columns:1fr 120px;
+  gap:7px;
+}
+
+.add-column-grid input,
+.add-column-grid select{
+  min-height:40px;
+  width:100%;
+  border:1px solid var(--line);
+  background:var(--surface);
+  color:var(--text);
+  border-radius:9px;
+  padding:8px;
+  outline:none;
+}
+
+.link-config{
+  margin-top:8px;
+  display:grid;
+  gap:7px;
+}
+
+/* =========================================================
+   MODAL
+   ========================================================= */
+
+.modal-backdrop{
+  position:fixed;
+  inset:0;
+  z-index:300;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:rgba(0,0,0,.65);
+}
+
+.modal-backdrop.show{
+  display:flex;
+}
+
+.modal{
+  width:min(420px,100%);
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:16px;
+  box-shadow:var(--shadow);
+  padding:16px;
+}
+
+.modal-title{
+  font-size:16px;
+  font-weight:850;
+}
+
+.modal-text{
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.5;
+  margin:8px 0 15px;
+}
+
+.modal-actions{
+  display:flex;
+  gap:8px;
+}
+
+.modal-actions button{
+  flex:1;
+  min-height:42px;
+  border-radius:9px;
+  border:1px solid var(--line);
+  background:var(--surface2);
+}
+
+.modal-actions .danger{
+  color:#fff;
+  background:var(--danger);
+  border-color:var(--danger);
+}
+
+/* =========================================================
+   TOAST
+   ========================================================= */
+
+.toast{
+  position:fixed;
+  left:50%;
+  bottom:
+    calc(78px + env(safe-area-inset-bottom));
+  transform:translateX(-50%) translateY(15px);
+  z-index:500;
+  max-width:calc(100vw - 30px);
+  background:#20262d;
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:9px 12px;
+  color:var(--text);
+  font-size:11px;
+  opacity:0;
+  pointer-events:none;
+  transition:.18s ease;
+  box-shadow:var(--shadow);
+}
+
+.toast.show{
+  opacity:1;
+  transform:translateX(-50%) translateY(0);
+}
+
+/* =========================================================
+   PRINT
+   ========================================================= */
+
+@media print{
+
+  @page{
+    size:A4 landscape;
+    margin:10mm;
+  }
+
+  body{
+    background:#fff!important;
+    color:#111!important;
+    overflow:visible!important;
+  }
+
+  body > *{
+    display:none!important;
+  }
+
+  #pdfPrintRoot{
+    display:block!important;
+    color:#111;
+    background:#fff;
+    font-family:Arial,sans-serif;
+  }
+
+  #pdfPrintRoot .pdf-title{
+    font-size:18px;
+    font-weight:700;
+    margin-bottom:3px;
+  }
+
+  #pdfPrintRoot .pdf-meta{
+    color:#555;
+    font-size:9px;
+    margin-bottom:12px;
+  }
+
+  #pdfPrintRoot table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:9px;
+  }
+
+  #pdfPrintRoot th{
+    background:#eee;
+    border:1px solid #999;
+    padding:5px;
+    text-align:left;
+  }
+
+  #pdfPrintRoot td{
+    border:1px solid #aaa;
+    padding:5px;
+  }
+
+  #pdfPrintRoot thead{
+    display:table-header-group;
+  }
+
+  #pdfPrintRoot tr{
+    break-inside:avoid;
+  }
+
+  #pdfPrintRoot .pdf-number{
+    text-align:right;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- =======================================================
+     TOP BAR
+     ======================================================= -->
+
+<header class="topbar">
+
+  <button
+    class="icon-btn"
+    id="backBtn"
+    data-action="back">
+    ‹
+  </button>
+
+  <div class="topbar-title">
+    <div class="main" id="topTitle">LASER DATA</div>
+    <div class="sub" id="topSub">Registers → Tables → Entries</div>
+  </div>
+
+  <button
+    class="icon-btn"
+    data-action="globalMenu">
+    ⋮
+  </button>
+
+</header>
+
+<!-- =======================================================
+     APP
+     ======================================================= -->
+
+<main class="app" id="app"></main>
+
+<!-- =======================================================
+     FAB
+     ======================================================= -->
+
+<button
+  class="fab"
+  id="fab"
+  data-action="fab">
+  +
+</button>
+
+<!-- =======================================================
+     SHEET
+     ======================================================= -->
+
+<div
+  class="sheet-backdrop"
+  id="sheetBackdrop">
+
+  <div class="sheet">
+
+    <div class="sheet-handle"></div>
+
+    <div class="sheet-head">
+
+      <div
+        class="sheet-title"
+        id="sheetTitle">
+        Entry
+      </div>
+
+      <button
+        class="icon-btn"
+        data-action="closeSheet">
+        ×
+      </button>
+
+    </div>
+
+    <div
+      class="sheet-body"
+      id="sheetBody">
+    </div>
+
+    <div
+      class="sheet-footer"
+      id="sheetFooter">
+    </div>
+
+  </div>
+
+</div>
+
+<!-- =======================================================
+     MODAL
+     ======================================================= -->
+
+<div
+  class="modal-backdrop"
+  id="modalBackdrop">
+
+  <div class="modal">
+
+    <div
+      class="modal-title"
+      id="modalTitle">
+      Confirm
+    </div>
+
+    <div
+      class="modal-text"
+      id="modalText">
+    </div>
+
+    <div class="modal-actions">
+
+      <button
+        data-action="modalCancel">
+        Cancel
+      </button>
+
+      <button
+        class="danger"
+        data-action="modalConfirm">
+        Delete
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- =======================================================
+     KEYBOARD RAIL
+     ======================================================= -->
+
+<div
+  class="keyboard-rail"
+  id="keyboardRail">
+
+  <div class="kr-inner">
+
+    <div
+      class="kr-label"
+      id="krLabel">
+      Recent
+    </div>
+
+    <div
+      class="kr-scroll"
+      id="krScroll">
+    </div>
+
+  </div>
+
+</div>
+
+<!-- =======================================================
+     TOAST
+     ======================================================= -->
+
+<div
+  class="toast"
+  id="toast">
+</div>
+
+<script>
+"use strict";
+
+/* =========================================================
+   CONSTANTS
+   ========================================================= */
+
+const MONTHS_S = [
+  "Jan","Feb","Mar","Apr","May","Jun",
+  "Jul","Aug","Sep","Oct","Nov","Dec"
+];
+
+const MONTHS_F = [
+  "January","February","March","April",
+  "May","June","July","August",
+  "September","October","November","December"
+];
+
+const DOW_S = [
+  "Sun","Mon","Tue","Wed","Thu","Fri","Sat"
+];
+
+/* =========================================================
+   BASIC HELPERS
+   ========================================================= */
+
+function uid(){
+  if (
+    window.crypto &&
+    typeof crypto.randomUUID === "function"
+  ){
+    return crypto
+      .randomUUID()
+      .replace(/-/g,"");
+  }
+
+  return (
+    Date.now().toString(36) +
+    Math.random().toString(36).slice(2,10)
+  );
+}
+
+function esc(value){
+  return String(value ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#39;");
+}
+
+function pad2(n){
+  return String(n).padStart(2,"0");
+}
+
+function todayISO(){
+  const d = new Date();
+
+  return [
+    d.getFullYear(),
+    pad2(d.getMonth()+1),
+    pad2(d.getDate())
+  ].join("-");
+}
+
+function parseIso(value){
+
+  const m =
+    /^(\d{4})-(\d{2})-(\d{2})$/
+      .exec(String(value || ""));
+
+  if (!m){
+    const d = new Date();
+
+    return {
+      y:d.getFullYear(),
+      m:d.getMonth(),
+      d:d.getDate()
+    };
+  }
+
+  return {
+    y:Number(m[1]),
+    m:Number(m[2])-1,
+    d:Number(m[3])
+  };
+}
+
+function formatDateHuman(value){
+
+  const d = parseIso(value);
+
+  return (
+    pad2(d.d) +
+    " " +
+    MONTHS_S[d.m] +
+    " " +
+    d.y
+  );
+}
+
+function formatDateShort(value){
+
+  const d = parseIso(value);
+
+  return (
+    pad2(d.d) +
+    "-" +
+    pad2(d.m+1) +
+    "-" +
+    d.y
+  );
+}
+
+function num(value){
+
+  const n = Number(value);
+
+  if (!Number.isFinite(n)){
+    return "";
+  }
+
+  return new Intl.NumberFormat(
+    "en-IN",
+    {
+      maximumFractionDigits:2
+    }
+  ).format(n);
+}
+
+function clone(obj){
+  return JSON.parse(JSON.stringify(obj));
+}
+
+/* =========================================================
+   TOAST
+   ========================================================= */
+
+let toastTimer = null;
+
+function toast(message){
+
+  const el =
+    document.getElementById("toast");
+
+  el.textContent = message;
+  el.classList.add("show");
+
+  clearTimeout(toastTimer);
+
+  toastTimer = setTimeout(() => {
+    el.classList.remove("show");
+  },2200);
+}
+
+/* =========================================================
+   STORE
+   ========================================================= */
+
+const Store = {
+
+  KEY:"laser.registers.v3",
+  RECENT_KEY:"laser.recent.v3",
+
+  state:{
+    registers:[]
+  },
+
+  recent:{},
+
+  init(){
+
+    this.load();
+
+    this.validate();
+  },
+
+  load(){
+
+    try{
+
+      const raw =
+        localStorage.getItem(this.KEY);
+
+      if (raw){
+        this.state = JSON.parse(raw);
+      }
+
+    }catch(error){
+
+      console.error(
+        "Laser data load error",
+        error
+      );
+
+      this.state = {
+        registers:[]
+      };
+
+      toast(
+        "Stored data damaged — blank state loaded"
+      );
+    }
+
+    try{
+
+      const raw =
+        localStorage.getItem(
+          this.RECENT_KEY
+        );
+
+      if (raw){
+        this.recent = JSON.parse(raw);
+      }
+
+    }catch(error){
+
+      console.error(
+        "Recent history load error",
+        error
+      );
+
+      this.recent = {};
+    }
+
+    if (
+      !this.state ||
+      !Array.isArray(this.state.registers)
+    ){
+      this.state = {
+        registers:[]
+      };
+    }
+
+    if (
+      !this.recent ||
+      typeof this.recent !== "object"
+    ){
+      this.recent = {};
+    }
+  },
+
+  save(){
+
+    try{
+
+      localStorage.setItem(
+        this.KEY,
+        JSON.stringify(this.state)
+      );
+
+      return true;
+
+    }catch(error){
+
+      console.error(
+        "Laser data save error",
+        error
+      );
+
+      toast(
+        "Storage full — data save failed"
+      );
+
+      return false;
+    }
+  },
+
+  saveRecent(){
+
+    try{
+
+      localStorage.setItem(
+        this.RECENT_KEY,
+        JSON.stringify(this.recent)
+      );
+
+      return true;
+
+    }catch(error){
+
+      console.error(error);
+
+      return false;
+    }
+  },
+
+  validate(){
+
+    this.state.registers.forEach(
+      reg => {
+
+        if (!reg.id){
+          reg.id = "r_" + uid();
+        }
+
+        if (!reg.name){
+          reg.name = "Unnamed Register";
+        }
+
+        if (
+          !Number.isFinite(
+            Number(reg.year)
+          )
+        ){
+          reg.year =
+            new Date().getFullYear();
+        }
+
+        if (!Array.isArray(reg.tables)){
+          reg.tables = [];
+        }
+
+        reg.tables.forEach(
+          table => {
+
+            if (!table.id){
+              table.id = "t_" + uid();
+            }
+
+            if (!table.name){
+              table.name = "Unnamed Table";
+            }
+
+            if (!Array.isArray(table.columns)){
+              table.columns = [];
+            }
+
+            if (!Array.isArray(table.entries)){
+              table.entries = [];
+            }
+
+            table.columns.forEach(
+              col => {
+
+                if (!col.id){
+                  col.id = "c_" + uid();
+                }
+
+                if (!col.name){
+                  col.name = "Unnamed";
+                }
+
+                if (
+                  !["text","number","link"]
+                    .includes(col.type)
+                ){
+                  col.type = "text";
+                }
+
+                if (
+                  col.type === "link" &&
+                  !col.link
+                ){
+                  col.link = {
+                    tableId:"",
+                    colId:"",
+                    display:"rail"
+                  };
+                }
+
+                col._tableId = table.id;
+              }
+            );
+
+            table.entries.forEach(
+              entry => {
+
+                if (!entry.id){
+                  entry.id = "e_" + uid();
+                }
+
+                if (!entry.date){
+                  entry.date = todayISO();
+                }
+
+                if (
+                  !entry.values ||
+                  typeof entry.values !== "object"
+                ){
+                  entry.values = {};
+                }
+              }
+            );
+          }
+        );
+      }
+    );
+
+    this.save();
+  },
+
+  getRegs(){
+    return this.state.registers;
+  },
+
+  getReg(id){
+
+    return this.state.registers.find(
+      r => r.id === id
+    );
+  },
+
+  getTable(regId,tableId){
+
+    const reg = this.getReg(regId);
+
+    if (!reg) return null;
+
+    return reg.tables.find(
+      t => t.id === tableId
+    );
+  },
+
+  normalizeFieldKey(name){
+
+    return String(name || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g," ");
+  },
+
+  captureRecentGlobal(
+    fieldName,
+    value
+  ){
+
+    const s =
+      String(value ?? "").trim();
+
+    if (!s) return;
+
+    const key =
+      "global::" +
+      this.normalizeFieldKey(
+        fieldName
+      );
+
+    if (!this.recent[key]){
+      this.recent[key] = [];
+    }
+
+    this.recent[key] = [
+      s,
+      ...this.recent[key].filter(
+        x => String(x) !== s
+      )
+    ].slice(0,30);
+
+    this.saveRecent();
+  },
+
+  getRecentGlobal(fieldName){
+
+    const key =
+      "global::" +
+      this.normalizeFieldKey(
+        fieldName
+      );
+
+    return (
+      this.recent[key] || []
+    ).slice(0,30);
+  },
+
+  createRegister(name,year){
+
+    const reg = {
+
+      id:"r_" + uid(),
+
+      name:
+        String(name || "")
+          .trim() ||
+        "New Register",
+
+      year:
+        Number(year) ||
+        new Date().getFullYear(),
+
+      tables:[]
+    };
+
+    this.state.registers.push(reg);
+
+    this.save();
+
+    return reg;
+  },
+
+  deleteRegister(id){
+
+    this.state.registers =
+      this.state.registers.filter(
+        r => r.id !== id
+      );
+
+    this.save();
+  },
+
+  createTable(
+    regId,
+    name,
+    columns
+  ){
+
+    const reg =
+      this.getReg(regId);
+
+    if (!reg) return null;
+
+    const tableId =
+      "t_" + uid();
+
+    const table = {
+
+      id:tableId,
+
+      name:
+        String(name || "")
+          .trim() ||
+        "New Table",
+
+      columns:
+        columns.map(
+          c => {
+
+            const col = {
+
+              id:
+                c.id ||
+                "c_" + uid(),
+
+              name:
+                String(c.name || "")
+                  .trim() ||
+                "Field",
+
+              type:
+                c.type || "text",
+
+              _tableId:tableId
+            };
+
+            if (
+              col.type === "link"
+            ){
+
+              col.link = {
+                tableId:
+                  c.link?.tableId || "",
+
+                colId:
+                  c.link?.colId || "",
+
+                display:
+                  c.link?.display ||
+                  "rail"
+              };
+
+            }
+
+            return col;
+          }
+        ),
+
+      entries:[]
+    };
+
+    reg.tables.push(table);
+
+    this.save();
+
+    return table;
+  },
+
+  deleteTable(
+    regId,
+    tableId
+  ){
+
+    const reg =
+      this.getReg(regId);
+
+    if (!reg) return false;
+
+    const incoming =
+      this.incomingTableLinks(
+        regId,
+        tableId
+      );
+
+    if (incoming.length){
+
+      toast(
+        "Remove linked fields before deleting this table"
+      );
+
+      return false;
+    }
+
+    reg.tables =
+      reg.tables.filter(
+        t => t.id !== tableId
+      );
+
+    this.save();
+
+    return true;
+  },
+
+  addEntry(
+    regId,
+    tableId,
+    date,
+    values
+  ){
+
+    const table =
+      this.getTable(
+        regId,
+        tableId
+      );
+
+    if (!table) return null;
+
+    const entry = {
+
+      id:"e_" + uid(),
+
+      date:
+        /^\d{4}-\d{2}-\d{2}$/
+          .test(date)
+          ? date
+          : todayISO(),
+
+      values:{...values}
+    };
+
+    table.entries.push(entry);
+
+    table.columns.forEach(
+      col => {
+
+        const value =
+          entry.values[col.id];
+
+        if (
+          value !== undefined &&
+          value !== ""
+        ){
+
+          this.captureRecentGlobal(
+            col.name,
+            value
+          );
+        }
+      }
+    );
+
+    this.save();
+
+    return entry;
+  },
+
+  updateEntry(
+    regId,
+    tableId,
+    entryId,
+    patch
+  ){
+
+    const table =
+      this.getTable(
+        regId,
+        tableId
+      );
+
+    if (!table) return false;
+
+    const entry =
+      table.entries.find(
+        e => e.id === entryId
+      );
+
+    if (!entry) return false;
+
+    if (
+      patch.date !== undefined
+    ){
+      entry.date =
+        /^\d{4}-\d{2}-\d{2}$/
+          .test(patch.date)
+          ? patch.date
+          : entry.date;
+    }
+
+    if (
+      patch.values
+    ){
+
+      entry.values = {
+        ...entry.values,
+        ...patch.values
+      };
+
+      table.columns.forEach(
+        col => {
+
+          const value =
+            entry.values[col.id];
+
+          if (
+            value !== undefined &&
+            value !== ""
+          ){
+
+            this.captureRecentGlobal(
+              col.name,
+              value
+            );
+          }
+        }
+      );
+    }
+
+    this.save();
+
+    return true;
+  },
+
+  deleteEntry(
+    regId,
+    tableId,
+    entryId
+  ){
+
+    const table =
+      this.getTable(
+        regId,
+        tableId
+      );
+
+    if (!table) return false;
+
+    table.entries =
+      table.entries.filter(
+        e => e.id !== entryId
+      );
+
+    this.save();
+
+    return true;
+  },
+
+  incomingTableLinks(
+    regId,
+    tableId
+  ){
+
+    const reg =
+      this.getReg(regId);
+
+    if (!reg) return [];
+
+    const result = [];
+
+    reg.tables.forEach(
+      table => {
+
+        table.columns.forEach(
+          col => {
+
+            if (
+              col.type === "link" &&
+              col.link?.tableId === tableId
+            ){
+
+              result.push({
+                table,
+                column:col
+              });
+            }
+          }
+        );
+      }
+    );
+
+    return result;
+  },
+
+  incomingColumnLinks(
+    regId,
+    tableId,
+    columnId
+  ){
+
+    const reg =
+      this.getReg(regId);
+
+    if (!reg) return [];
+
+    const result = [];
+
+    reg.tables.forEach(
+      table => {
+
+        table.columns.forEach(
+          col => {
+
+            if (
+              col.type === "link" &&
+              col.link?.tableId === tableId &&
+              col.link?.colId === columnId
+            ){
+
+              result.push({
+                table,
+                column:col
+              });
+            }
+          }
+        );
+      }
+    );
+
+    return result;
+  },
+
+  applySchema(
+    regId,
+    tableId,
+    nextColumns
+  ){
+
+    const table =
+      this.getTable(
+        regId,
+        tableId
+      );
+
+    if (!table) return false;
+
+    const names = new Set();
+
+    for (
+      const col of nextColumns
+    ){
+
+      const key =
+        col.name
+          .trim()
+          .toLowerCase();
+
+      if (!key){
+        toast("Column name required");
+        return false;
+      }
+
+      if (names.has(key)){
+        toast("Duplicate column name");
+        return false;
+      }
+
+      names.add(key);
+    }
+
+    const oldIds =
+      new Set(
+        table.columns.map(
+          c => c.id
+        )
+      );
+
+    const newIds =
+      new Set(
+        nextColumns.map(
+          c => c.id
+        )
+      );
+
+    for (
+      const oldId of oldIds
+    ){
+
+      if (!newIds.has(oldId)){
+
+        const incoming =
+          this.incomingColumnLinks(
+            regId,
+            tableId,
+            oldId
+          );
+
+        if (incoming.length){
+
+          toast(
+            "Column is used by another Link field"
+          );
+
+          return false;
+        }
+      }
+    }
+
+    table.entries.forEach(
+      entry => {
+
+        Object.keys(
+          entry.values
+        ).forEach(
+          key => {
+
+            if (!newIds.has(key)){
+              delete entry.values[key];
+            }
+          }
+        );
+      }
+    );
+
+    table.columns =
+      nextColumns.map(
+        c => {
+
+          const out = {
+            id:c.id,
+            name:c.name.trim(),
+            type:c.type,
+            _tableId:table.id
+          };
+
+          if (c.type === "link"){
+
+            out.link = {
+              tableId:
+                c.link?.tableId || "",
+
+              colId:
+                c.link?.colId || "",
+
+              display:
+                c.link?.display ||
+                "rail"
+            };
+          }
+
+          return out;
+        }
+      );
+
+    this.save();
+
+    return true;
+  },
+
+  exportBackup(){
+
+    this.validate();
+
+    const payload = {
+
+      app:"LASER DATA",
+
+      version:3,
+
+      exportedAt:
+        new Date().toISOString(),
+
+      data:this.state,
+
+      recent:this.recent
+    };
+
+    const blob =
+      new Blob(
+        [
+          JSON.stringify(
+            payload,
+            null,
+            2
+          )
+        ],
+        {
+          type:"application/json"
+        }
+      );
+
+    const url =
+      URL.createObjectURL(blob);
+
+    const a =
+      document.createElement("a");
+
+    a.href = url;
+
+    a.download =
+      "laser-data-backup-" +
+      todayISO() +
+      ".json";
+
+    document.body.appendChild(a);
+
+    a.click();
+
+    a.remove();
+
+    setTimeout(
+      () => URL.revokeObjectURL(url),
+      1000
+    );
+
+    toast("Backup exported");
+  },
+
+  importBackup(file){
+
+    return new Promise(
+      (resolve,reject) => {
+
+        const reader =
+          new FileReader();
+
+        reader.onload = () => {
+
+          try{
+
+            const payload =
+              JSON.parse(
+                reader.result
+              );
+
+            if (
+              !payload ||
+              !payload.data ||
+              !Array.isArray(
+                payload.data.registers
+              )
+            ){
+
+              throw new Error(
+                "Invalid backup"
+              );
+            }
+
+            this.state =
+              payload.data;
+
+            if (
+              payload.recent &&
+              typeof payload.recent === "object"
+            ){
+
+              this.recent =
+                payload.recent;
+            }
+
+            this.validate();
+
+            this.save();
+            this.saveRecent();
+
+            resolve(true);
+
+          }catch(error){
+
+            reject(error);
+          }
+        };
+
+        reader.onerror = () =>
+          reject(reader.error);
+
+        reader.readAsText(file);
+      }
+    );
+  }
+};
+
+/* =========================================================
+   KEYBOARD RAIL
+   ========================================================= */
+
+const KeyboardRail = {
+
+  el:
+    document.getElementById(
+      "keyboardRail"
+    ),
+
+  input:null,
+
+  bound:new WeakSet(),
+
+  init(){
+
+    document.addEventListener(
+      "focusin",
+      event => {
+
+        const target =
+          event.target;
+
+        if (
+          target &&
+          target.matches &&
+          target.matches(
+            "[data-recent-field]"
+          )
+        ){
+
+          this.open(target);
+        }
+      }
+    );
+
+    document.addEventListener(
+      "focusout",
+      event => {
+
+        const target =
+          event.target;
+
+        if (
+          target === this.input
+        ){
+
+          setTimeout(
+            () => {
+
+              const active =
+                document.activeElement;
+
+              if (
+                !active ||
+                !active.matches ||
+                !active.matches(
+                  "[data-recent-field]"
+                )
+              ){
+
+                this.hide();
+              }
+
+            },
+            80
+          );
+        }
+      }
+    );
+
+    document.addEventListener(
+      "click",
+      event => {
+
+        const chip =
+          event.target.closest(
+            ".kr-chip"
+          );
+
+        if (!chip) return;
+
+        if (!this.input) return;
+
+        const value =
+          chip.dataset.value || "";
+
+        this.input.value =
+          value;
+
+        this.input.dispatchEvent(
+          new Event(
+            "input",
+            {
+              bubbles:true
+            }
+          )
+        );
+
+        this.input.focus();
+
+        this.filter(
+          value,
+          this.input.dataset.recentField,
+          this.input.dataset.recentType ||
+            "text"
+        );
+      }
+    );
+
+    window.addEventListener(
+      "resize",
+      () => this.reposition()
+    );
+
+    if (
+      window.visualViewport
+    ){
+
+      visualViewport.addEventListener(
+        "resize",
+        () => this.reposition()
+      );
+
+      visualViewport.addEventListener(
+        "scroll",
+        () => this.reposition()
+      );
+    }
+  },
+
+  open(input){
+
+    this.input = input;
+
+    const field =
+      input.dataset.recentField ||
+      "Recent";
+
+    const values =
+      Store.getRecentGlobal(
+        field
+      );
+
+    this.el
+      .querySelector("#krLabel")
+      .textContent =
+      field + " · Recent";
+
+    this.renderValues(
+      values,
+      input.value
+    );
+
+    if (!values.length){
+
+      this.hide();
+
+      return;
+    }
+
+    this.el.classList.add("show");
+
+    this.reposition();
+  },
+
+  filter(
+    value,
+    fieldName
+  ){
+
+    const q =
+      String(value || "")
+        .trim()
+        .toLowerCase();
+
+    const all =
+      Store.getRecentGlobal(
+        fieldName
+      );
+
+    if (!q){
+
+      this.renderValues(
+        all,
+        value
+      );
+
+      return;
+    }
+
+    const exact = [];
+    const starts = [];
+    const contains = [];
+
+    all.forEach(
+      item => {
+
+        const s =
+          String(item)
+            .toLowerCase();
+
+        if (s === q){
+          exact.push(item);
+        }else if (
+          s.startsWith(q)
+        ){
+          starts.push(item);
+        }else if (
+          s.includes(q)
+        ){
+          contains.push(item);
+        }
+      }
+    );
+
+    this.renderValues(
+      [
+        ...exact,
+        ...starts,
+        ...contains
+      ],
+      value
+    );
+  },
+
+  renderValues(
+    values,
+    current
+  ){
+
+    const scroll =
+      this.el.querySelector(
+        "#krScroll"
+      );
+
+    if (!values.length){
+
+      scroll.innerHTML =
+        `<div class="history-empty">
+          No matching recent value
+        </div>`;
+
+      this.el.classList.add("show");
+
+      return;
+    }
+
+    scroll.innerHTML =
+      values.map(
+        value => `
+
+          <button
+            type="button"
+            class="kr-chip ${
+              String(value) ===
+              String(current || "")
+                ? "active"
+                : ""
+            }"
+            data-value="${esc(value)}">
+
+            ${esc(value)}
+
+          </button>
+
+        `
+      ).join("");
+
+    this.el.classList.add("show");
+  },
+
+  reposition(){
+
+    if (
+      !this.input ||
+      !this.el.classList.contains("show")
+    ){
+      return;
+    }
+
+    if (
+      window.visualViewport
+    ){
+
+      const vv =
+        window.visualViewport;
+
+      const keyboardHeight =
+        Math.max(
+          0,
+          window.innerHeight -
+          vv.height -
+          vv.offsetTop
+        );
+
+      this.el.style.bottom =
+        keyboardHeight + "px";
+    }
+  },
+
+  hide(){
+
+    this.el.classList.remove("show");
+
+    this.input = null;
+  }
+};
+
+/* =========================================================
+   APP
+   ========================================================= */
+
+const App = {
+
+  screen:"registers",
+
+  activeRegId:null,
+
+  activeTableId:null,
+
+  sheetMode:null,
+
+  draftEntry:null,
+
+  columnDraft:null,
+
+  pendingConfirm:null,
+
+  view:{
+    month:new Date().getMonth(),
+    day:null,
+    search:"",
+    sortStack:[],
+    filters:{},
+    selected:new Set()
+  },
+
+  init(){
+
+    Store.init();
+
+    KeyboardRail.init();
+
+    this.bindEvents();
+
+    this.render();
+  },
+
+  bindEvents(){
+
+    document.addEventListener(
+      "click",
+      event => {
+
+        const actionEl =
+          event.target.closest(
+            "[data-action]"
+          );
+
+        if (!actionEl) return;
+
+        const action =
+          actionEl.dataset.action;
+
+        this.handleAction(
+          action,
+          actionEl,
+          event
+        );
+      }
+    );
+
+    document.addEventListener(
+      "input",
+      event => {
+
+        if (
+          event.target.id ===
+          "tableSearch"
+        ){
+
+          this.view.search =
+            event.target.value;
+
+          this.renderTable();
+        }
+
+        if (
+          event.target.matches(
+            "[data-recent-field]"
+          )
+        ){
+
+          KeyboardRail.filter(
+            event.target.value,
+            event.target.dataset.recentField
+          );
+        }
+      }
+    );
+
+    document.addEventListener(
+      "keydown",
+      event => {
+
+        if (
+          event.key === "Escape"
+        ){
+
+          if (
+            document
+              .getElementById(
+                "modalBackdrop"
+              )
+              .classList.contains("show")
+          ){
+
+            this.closeModal();
+
+            return;
+          }
+
+          if (
+            document
+              .getElementById(
+                "sheetBackdrop"
+              )
+              .classList.contains("show")
+          ){
+
+            this.closeSheet();
+
+            return;
+          }
+
+          KeyboardRail.hide();
+        }
+      }
+    );
+  },
+
+  handleAction(
+    action,
+    el
+  ){
+
+    switch(action){
+
+      case "back":
+        this.back();
+        break;
+
+      case "fab":
+        this.fab();
+        break;
+
+      case "openRegister":
+        this.openRegister(
+          el.dataset.id
+        );
+        break;
+
+      case "openTable":
+        this.openTable(
+          el.dataset.id
+        );
+        break;
+
+      case "newRegister":
+        this.openRegisterForm();
+        break;
+
+      case "newTable":
+        this.openTableForm();
+        break;
+
+      case "newEntry":
+        this.openEntryForm();
+        break;
+
+      case "editEntry":
+        this.openEntryForm(
+          el.dataset.id
+        );
+        break;
+
+      case "deleteEntry":
+        this.confirm(
+          "Delete entry?",
+          "This entry will be permanently removed.",
+          () => {
+
+            Store.deleteEntry(
+              this.activeRegId,
+              this.activeTableId,
+              el.dataset.id
+            );
+
+            this.renderTable();
+
+            toast("Entry deleted");
+          }
+        );
+        break;
+
+      case "deleteRegister":
+        this.confirm(
+          "Delete register?",
+          "All tables and entries inside this register will be removed.",
+          () => {
+
+            Store.deleteRegister(
+              this.activeRegId
+            );
+
+            this.activeRegId = null;
+            this.activeTableId = null;
+
+            this.go("registers");
+
+            toast("Register deleted");
+          }
+        );
+        break;
+
+      case "deleteTable":
+        this.confirm(
+          "Delete table?",
+          "All entries in this table will be removed.",
+          () => {
+
+            if (
+              Store.deleteTable(
+                this.activeRegId,
+                this.activeTableId
+              )
+            ){
+
+              this.activeTableId = null;
+
+              this.go("register");
+
+              toast("Table deleted");
+            }
+          }
+        );
+        break;
+
+      case "month":
+        this.view.month =
+          Number(el.dataset.month);
+
+        this.view.day = null;
+
+        this.renderTable();
+
+        break;
+
+      case "day":
+
+        this.view.day =
+          el.dataset.day === "all"
+            ? null
+            : Number(
+                el.dataset.day
+              );
+
+        this.renderTable();
+
+        break;
+
+      case "sort":
+        this.sortBy(
+          el.dataset.col
+        );
+        break;
+
+      case "editCell":
+        this.editCell(
+          el
+        );
+        break;
+
+      case "selectRow":
+        this.toggleRow(
+          el.dataset.id
+        );
+        break;
+
+      case "closeSheet":
+        this.closeSheet();
+        break;
+
+      case "saveSheet":
+        this.saveSheet();
+        break;
+
+      case "modalCancel":
+        this.closeModal();
+        break;
+
+      case "modalConfirm":
+        this.runConfirm();
+        break;
+
+      case "manageColumns":
+        this.openColumnManager();
+        break;
+
+      case "moveColumnUp":
+        this.moveDraftColumn(
+          el.dataset.id,
+          -1
+        );
+        break;
+
+      case "moveColumnDown":
+        this.moveDraftColumn(
+          el.dataset.id,
+          1
+        );
+        break;
+
+      case "removeDraftColumn":
+        this.removeDraftColumn(
+          el.dataset.id
+        );
+        break;
+
+      case "addDraftColumn":
+        this.addDraftColumn();
+        break;
+
+      case "saveColumns":
+        this.saveColumns();
+        break;
+
+      case "exportPDF":
+        this.exportPDF();
+        break;
+
+      case "exportBackup":
+        Store.exportBackup();
+        break;
+
+      case "importBackup":
+        this.importBackup();
+        break;
+
+      case "globalMenu":
+        this.openGlobalMenu();
+        break;
+
+      case "editRegister":
+        this.openRegisterForm(
+          this.activeRegId
+        );
+        break;
+
+      case "renameTable":
+        this.renameTable();
+        break;
+
+      case "duplicateTable":
+        this.duplicateTable();
+        break;
+    }
+  },
+
+  go(screen){
+
+    this.screen = screen;
+
+    KeyboardRail.hide();
+
+    this.render();
+  },
+
+  back(){
+
+    KeyboardRail.hide();
+
+    if (
+      this.screen === "registers"
+    ){
+      return;
+    }
+
+    if (
+      this.screen === "register"
+    ){
+
+      this.activeRegId = null;
+
+      this.go("registers");
+
+      return;
+    }
+
+    if (
+      this.screen === "table"
+    ){
+
+      this.activeTableId = null;
+
+      this.go("register");
+
+      return;
+    }
+
+    this.go("registers");
+  },
+
+  render(){
+
+    const app =
+      document.getElementById(
+        "app"
+      );
+
+    if (
+      this.screen === "registers"
+    ){
+
+      app.innerHTML =
+        this.renderRegisters();
+
+      this.updateTop(
+        "LASER DATA",
+        "Registers → Tables → Entries"
+      );
+
+      this.setFab(true);
+
+      return;
+    }
+
+    if (
+      this.screen === "register"
+    ){
+
+      app.innerHTML =
+        this.renderRegister();
+
+      const reg =
+        Store.getReg(
+          this.activeRegId
+        );
+
+      this.updateTop(
+        reg?.name || "Register",
+        `${reg?.year || ""} · Tables`
+      );
+
+      this.setFab(true);
+
+      return;
+    }
+
+    if (
+      this.screen === "table"
+    ){
+
+      app.innerHTML =
+        this.renderTable();
+
+      const reg =
+        Store.getReg(
+          this.activeRegId
+        );
+
+      const table =
+        Store.getTable(
+          this.activeRegId,
+          this.activeTableId
+        );
+
+      this.updateTop(
+        table?.name || "Table",
+        `${reg?.name || ""} · ${reg?.year || ""}`
+      );
+
+      this.setFab(true);
+
+      return;
+    }
+  },
+
+  renderRegisters(){
+
+    const regs =
+      Store.getRegs();
+
+    return `
+
+      <section class="screen">
+
+        <div class="page-title">
+          Registers
+        </div>
+
+        <div class="page-subtitle">
+          Data containers. Each register can contain multiple tables.
+        </div>
+
+        <div class="toolbar">
+
+          <button
+            class="tool-btn accent"
+            data-action="newRegister">
+            + New Register
+          </button>
+
+          <button
+            class="tool-btn"
+            data-action="exportBackup">
+            Backup
+          </button>
+
+          <button
+            class="tool-btn"
+            data-action="importBackup">
+            Restore
+          </button>
+
+        </div>
+
+        ${
+          regs.length
+            ? `
+              <div class="card-grid">
+
+                ${regs.map(
+                  reg => `
+
+                    <div
+                      class="card"
+                      data-action="openRegister"
+                      data-id="${reg.id}">
+
+                      <div class="card-head">
+
+                        <div class="card-icon">
+                          ${esc(
+                            reg.name
+                              .slice(0,1)
+                              .toUpperCase()
+                          )}
+                        </div>
+
+                        <div class="card-main">
+
+                          <div class="card-name">
+                            ${esc(reg.name)}
+                          </div>
+
+                          <div class="card-meta">
+                            ${reg.year}
+                            · ${reg.tables.length}
+                            table${reg.tables.length === 1 ? "" : "s"}
+                          </div>
+
+                        </div>
+
+                      </div>
+
+                      <div class="card-actions">
+
+                        <button
+                          class="small-btn"
+                          data-action="openRegister"
+                          data-id="${reg.id}">
+                          Open
+                        </button>
+
+                        <button
+                          class="small-btn danger"
+                          data-action="deleteRegister"
+                          data-id="${reg.id}">
+                          Delete
+                        </button>
+
+                      </div>
+
+                    </div>
+
+                  `
+                ).join("")}
+
+              </div>
+            `
+            : `
+
+              <div class="empty">
+
+                <div class="big">▦</div>
+
+                <div class="title">
+                  No registers
+                </div>
+
+                <div class="sub">
+                  Create your first register.
+                </div>
+
+              </div>
+
+            `
+        }
+
+      </section>
+    `;
+  },
+
+  renderRegister(){
+
+    const reg =
+      Store.getReg(
+        this.activeRegId
+      );
+
+    if (!reg){
+      this.go("registers");
+      return "";
+    }
+
+    return `
+
+      <section class="screen">
+
+        <div class="page-title">
+          ${esc(reg.name)}
+        </div>
+
+        <div class="page-subtitle">
+          Year ${reg.year}
+          · ${reg.tables.length} tables
+        </div>
+
+        <div class="toolbar">
+
+          <button
+            class="tool-btn accent"
+            data-action="newTable">
+            + New Table
+          </button>
+
+          <button
+            class="tool-btn"
+            data-action="editRegister">
+            Rename
+          </button>
+
+          <button
+            class="tool-btn danger"
+            data-action="deleteRegister">
+            Delete Register
+          </button>
+
+        </div>
+
+        ${
+          reg.tables.length
+            ? `
+
+              <div class="card-grid">
+
+                ${reg.tables.map(
+                  table => `
+
+                    <div
+                      class="card"
+                      data-action="openTable"
+                      data-id="${table.id}">
+
+                      <div class="card-head">
+
+                        <div class="card-icon">
+                          ▤
+                        </div>
+
+                        <div class="card-main">
+
+                          <div class="card-name">
+                            ${esc(table.name)}
+                          </div>
+
+                          <div class="card-meta">
+                            ${table.columns.length} fields
+                            · ${table.entries.length} entries
+                          </div>
+
+                        </div>
+
+                      </div>
+
+                      <div class="card-actions">
+
+                        <button
+                          class="small-btn"
+                          data-action="openTable"
+                          data-id="${table.id}">
+                          Open
+                        </button>
+
+                        <button
+                          class="small-btn"
+                          data-action="manageColumns"
+                          data-id="${table.id}">
+                          Columns
+                        </button>
+
+                      </div>
+
+                    </div>
+
+                  `
+                ).join("")}
+
+              </div>
+
+            `
+            : `
+
+              <div class="empty">
+
+                <div class="big">▤</div>
+
+                <div class="title">
+                  No tables
+                </div>
+
+                <div class="sub">
+                  Create a table to start entering data.
+                </div>
+
+              </div>
+
+            `
+        }
+
+      </section>
+    `;
+  },
+
+  renderTable(){
+
+    return this.renderTableView();
+  },
+
+  getFilteredRows(){
+
+    const table =
+      Store.getTable(
+        this.activeRegId,
+        this.activeTableId
+      );
+
+    if (!table) return [];
+
+    let rows =
+      table.entries.filter(
+        entry => {
+
+          const d =
+            parseIso(entry.date);
+
+          if (
+            d.m !== this.view.month
+          ){
+            return false;
+          }
+
+          if (
+            this.view.day !== null &&
+            d.d !== this.view.day
+          ){
+            return false;
+          }
+
+          return true;
+        }
+      );
+
+    table.columns.forEach(
+      col => {
+
+        const filter =
+          this.view.filters[
+            col.id
+          ];
+
+        if (
+          filter === undefined ||
+          filter === null ||
+          filter === ""
+        ){
+          return;
+        }
+
+        rows =
+          rows.filter(
+            entry =>
+              String(
+                entry.values[col.id] ?? ""
+              ) ===
+              String(filter)
+          );
+      }
+    );
+
+    const q =
+      String(
+        this.view.search || ""
+      )
+      .trim()
+      .toLowerCase();
+
+    if (q){
+
+      rows =
+        rows.filter(
+          entry => {
+
+            if (
+              entry.date
+                .toLowerCase()
+                .includes(q)
+            ){
+              return true;
+            }
+
+            return table.columns.some(
+              col =>
+                String(
+                  entry.values[col.id] ?? ""
+                )
+                .toLowerCase()
+                .includes(q)
+            );
+          }
+        );
+    }
+
+    if (
+      this.view.sortStack.length
+    ){
+
+      rows.sort(
+        (a,b) => {
+
+          for (
+            const sort of
+            this.view.sortStack
+          ){
+
+            let va;
+            let vb;
+
+            if (
+              sort.key === "__date"
+            ){
+
+              va = a.date;
+              vb = b.date;
+
+            }else{
+
+              const col =
+                table.columns.find(
+                  c =>
+                    c.id === sort.key
+                );
+
+              if (!col) continue;
+
+              va =
+                a.values[col.id] ?? "";
+
+              vb =
+                b.values[col.id] ?? "";
+
+              if (
+                col.type === "number"
+              ){
+
+                va =
+                  Number(va || 0);
+
+                vb =
+                  Number(vb || 0);
+
+              }else{
+
+                va =
+                  String(va)
+                    .toLowerCase();
+
+                vb =
+                  String(vb)
+                    .toLowerCase();
+              }
+            }
+
+            const multiplier =
+              sort.dir === "asc"
+                ? 1
+                : -1;
+
+            if (va < vb){
+              return -1 * multiplier;
+            }
+
+            if (va > vb){
+              return 1 * multiplier;
+            }
+          }
+
+          return a.id.localeCompare(
+            b.id
+          );
+        }
+      );
+
+    }else{
+
+      rows.sort(
+        (a,b) =>
+          a.date.localeCompare(
+            b.date
+          ) ||
+          a.id.localeCompare(
+            b.id
+          )
+      );
+    }
+
+    return rows;
+  },
+
+  renderTableView(){
+
+    const reg =
+      Store.getReg(
+        this.activeRegId
+      );
+
+    const table =
+      Store.getTable(
+        this.activeRegId,
+        this.activeTableId
+      );
+
+    if (!reg || !table){
+      return "";
+    }
+
+    const rows =
+      this.getFilteredRows();
+
+    const numeric =
+      table.columns.filter(
+        c => c.type === "number"
+      );
+
+    const totalColumn =
+      numeric[0] || null;
+
+    let total = 0;
+
+    if (totalColumn){
+
+      rows.forEach(
+        entry => {
+
+          const value =
+            Number(
+              entry.values[
+                totalColumn.id
+              ] || 0
+            );
+
+          if (
+            Number.isFinite(value)
+          ){
+            total += value;
+          }
+        }
+      );
+    }
+
+    return `
+
+      <section class="screen">
+
+        <div class="table-tabs">
+
+          ${reg.tables.map(
+            t => `
+
+              <button
+                class="table-tab ${
+                  t.id === this.activeTableId
+                    ? "active"
+                    : ""
+                }"
+                data-action="openTable"
+                data-id="${t.id}">
+                ${esc(t.name)}
+              </button>
+
+            `
+          ).join("")}
+
+        </div>
+
+        <div class="toolbar">
+
+          <button
+            class="tool-btn accent"
+            data-action="newEntry">
+            + Entry
+          </button>
+
+          <button
+            class="tool-btn"
+            data-action="manageColumns">
+            Columns
+          </button>
+
+          <button
+            class="tool-btn"
+            data-action="exportPDF">
+            PDF
+          </button>
+
+          <button
+            class="tool-btn"
+            data-action="renameTable">
+            Rename
+          </button>
+
+          <button
+            class="tool-btn"
+            data-action="duplicateTable">
+            Duplicate
+          </button>
+
+          <button
+            class="tool-btn danger"
+            data-action="deleteTable">
+            Delete
+          </button>
+
+        </div>
+
+        <div class="search-wrap">
+
+          <span class="search-icon">
+            ⌕
+          </span>
+
+          <input
+            id="tableSearch"
+            class="search-input"
+            value="${esc(this.view.search)}"
+            placeholder="Search current table...">
+
+        </div>
+
+        <div class="section-label">
+          Month
+        </div>
+
+        <div class="rail">
+
+          ${MONTHS_S.map(
+            (month,i) => `
+
+              <button
+                class="rail-item ${
+                  this.view.month === i
+                    ? "active"
+                    : ""
+                }"
+                data-action="month"
+                data-month="${i}">
+                ${month}
+              </button>
+
+            `
+          ).join("")}
+
+        </div>
+
+        <div class="section-label">
+          Date
+        </div>
+
+        <div class="rail date-rail">
+
+          <button
+            class="rail-item ${
+              this.view.day === null
+                ? "active"
+                : ""
+            }"
+            data-action="day"
+            data-day="all">
+
+            All
+
+          </button>
+
+          ${this.renderDateRail(
+            reg.year,
+            this.view.month
+          )}
+
+        </div>
+
+        ${
+          rows.length
+            ? `
+
+              <div class="table-box">
+
+                <div class="table-scroll-x">
+
+                  <table class="dt">
+
+                    <thead>
+
+                      <tr>
+
+                        <th class="col-idx">
+                          #
+                        </th>
+
+                        <th
+                          class="date-col"
+                          data-action="sort"
+                          data-col="__date">
+
+                          <span class="hdr">
+
+                            Date
+
+                            <span class="sort-ind">
+                              ${
+                                this.sortIndicator(
+                                  "__date"
+                                )
+                              }
+                            </span>
+
+                          </span>
+
+                        </th>
+
+                        ${table.columns.map(
+                          col => `
+
+                            <th
+                              data-action="sort"
+                              data-col="${col.id}">
+
+                              <span class="hdr">
+
+                                ${esc(
+                                  col.name
+                                )}
+
+                                <span
+                                  class="sort-ind">
+                                  ${
+                                    this.sortIndicator(
+                                      col.id
+                                    )
+                                  }
+                                </span>
+
+                              </span>
+
+                            </th>
+
+                          `
+                        ).join("")}
+
+                        <th>
+                        </th>
+
+                      </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                      ${rows.map(
+                        (entry,i) => `
+
+                          <tr class="${
+                            this.view.selected.has(
+                              entry.id
+                            )
+                              ? "selected"
+                              : ""
+                          }">
+
+                            <td
+                              class="col-idx"
+                              data-action="selectRow"
+                              data-id="${entry.id}">
+
+                              ${i + 1}
+
+                            </td>
+
+                            <td
+                              class="date-col"
+                              data-action="editCell"
+                              data-id="${entry.id}"
+                              data-date-cell="1">
+
+                              <div class="date-main">
+                                ${formatDateHuman(
+                                  entry.date
+                                )}
+                              </div>
+
+                              <span class="date-sub">
+                                ${
+                                  DOW_S[
+                                    new Date(
+                                      ...(() => {
+                                        const d =
+                                          parseIso(
+                                            entry.date
+                                          );
+
+                                        return [
+                                          d.y,
+                                          d.m,
+                                          d.d
+                                        ];
+                                      })()
+                                    ).getDay()
+                                  ]
+                                }
+                              </span>
+
+                            </td>
+
+                            ${table.columns.map(
+                              col =>
+                                this.renderCell(
+                                  reg,
+                                  table,
+                                  entry,
+                                  col
+                                )
+                            ).join("")}
+
+                            <td>
+
+                              <div class="row-actions">
+
+                                <button
+                                  class="row-action"
+                                  data-action="editEntry"
+                                  data-id="${entry.id}">
+                                  ✎
+                                </button>
+
+                                <button
+                                  class="row-action danger"
+                                  data-action="deleteEntry"
+                                  data-id="${entry.id}">
+                                  ×
+                                </button>
+
+                              </div>
+
+                            </td>
+
+                          </tr>
+
+                        `
+                      ).join("")}
+
+                    </tbody>
+
+                    ${
+                      totalColumn
+                        ? `
+
+                          <tfoot>
+
+                            <tr class="total-row">
+
+                              <td></td>
+
+                              <td></td>
+
+                              ${table.columns.map(
+                                col => `
+
+                                  <td
+                                    class="${
+                                      col.id ===
+                                      totalColumn.id
+                                        ? "num-cell"
+                                        : ""
+                                    }">
+
+                                    ${
+                                      col.id ===
+                                      totalColumn.id
+                                        ? "Total: " +
+                                          num(total)
+                                        : ""
+                                    }
+
+                                  </td>
+
+                                `
+                              ).join("")}
+
+                              <td></td>
+
+                            </tr>
+
+                          </tfoot>
+
+                        `
+                        : ""
+                    }
+
+                  </table>
+
+                </div>
+
+              </div>
+
+            `
+            : `
+
+              <div class="empty">
+
+                <div class="big">
+                  ${table.entries.length ? "⌕" : "＋"}
+                </div>
+
+                <div class="title">
+                  ${
+                    table.entries.length
+                      ? "No matching entries"
+                      : "No entries"
+                  }
+                </div>
+
+                <div class="sub">
+                  ${
+                    table.entries.length
+                      ? "Change search or filters."
+                      : "Create the first entry."
+                  }
+                </div>
+
+              </div>
+
+            `
+        }
+
+        <div class="section-label">
+          ${rows.length} visible ·
+          ${table.entries.length} total
+        </div>
+
+      </section>
+    `;
+  },
+
+  renderDateRail(
+    year,
+    month
+  ){
+
+    const days =
+      new Date(
+        year,
+        month + 1,
+        0
+      ).getDate();
+
+    let html = "";
+
+    for (
+      let day=1;
+      day<=days;
+      day++
+    ){
+
+      const dow =
+        new Date(
+          year,
+          month,
+          day
+        ).getDay();
+
+      html += `
+
+        <button
+          class="rail-item ${
+            this.view.day === day
+              ? "active"
+              : ""
+          }"
+          data-action="day"
+          data-day="${day}">
+
+          <span class="day">
+            ${day}
+          </span>
+
+          <span class="dow">
+            ${DOW_S[dow]}
+          </span>
+
+        </button>
+
+      `;
+    }
+
+    return html;
+  },
+
+  sortIndicator(key){
+
+    const index =
+      this.view.sortStack.findIndex(
+        x => x.key === key
+      );
+
+    if (index < 0){
+      return "↕";
+    }
+
+    const item =
+      this.view.sortStack[index];
+
+    return (
+      (item.dir === "asc"
+        ? "↑"
+        : "↓") +
+      (this.view.sortStack.length > 1
+        ? (index + 1)
+        : "")
+    );
+  },
+
+  sortBy(key){
+
+    const stack =
+      this.view.sortStack;
+
+    const index =
+      stack.findIndex(
+        x => x.key === key
+      );
+
+    if (index === -1){
+
+      stack.push({
+        key,
+        dir:
+          key === "__date"
+            ? "asc"
+            : "asc"
+      });
+
+    }else{
+
+      if (
+        stack[index].dir === "asc"
+      ){
+
+        stack[index].dir = "desc";
+
+      }else{
+
+        stack.splice(index,1);
+      }
+    }
+
+    this.renderTable();
+  },
+
+  renderCell(
+    reg,
+    table,
+    entry,
+    col
+  ){
+
+    const raw =
+      entry.values[col.id];
+
+    if (
+      raw === undefined ||
+      raw === null ||
+      raw === ""
+    ){
+
+      return `
+        <td
+          data-action="editCell"
+          data-id="${entry.id}"
+          data-col="${col.id}">
+          <span class="cell-empty">—</span>
+        </td>
+      `;
+    }
+
+    if (
+      col.type === "number"
+    ){
+
+      return `
+        <td
+          class="num-cell"
+          data-action="editCell"
+          data-id="${entry.id}"
+          data-col="${col.id}">
+          ${num(raw)}
+        </td>
+      `;
+    }
+
+    if (
+      col.type === "link"
+    ){
+
+      const target =
+        Store.getTable(
+          reg.id,
+          col.link?.tableId
+        );
+
+      if (!target){
+
+        return `
+          <td
+            data-action="editCell"
+            data-id="${entry.id}"
+            data-col="${col.id}">
+            <span class="cell-empty">
+              Broken link
+            </span>
+          </td>
+        `;
+      }
+
+      const targetEntry =
+        target.entries.find(
+          e =>
+            String(e.id) ===
+            String(raw)
+        );
+
+      if (targetEntry){
+
+        const displayCol =
+          target.columns.find(
+            c =>
+              c.id ===
+              col.link?.colId
+          );
+
+        const label =
+          displayCol
+            ? targetEntry.values[
+                displayCol.id
+              ]
+            : targetEntry.id;
+
+        return `
+          <td
+            data-action="editCell"
+            data-id="${entry.id}"
+            data-col="${col.id}">
+
+            <span class="link-chip">
+              ${esc(
+                label || targetEntry.id
+              )}
+            </span>
+
+          </td>
+        `;
+      }
+    }
+
+    return `
+      <td
+        data-action="editCell"
+        data-id="${entry.id}"
+        data-col="${col.id}">
+        ${esc(raw)}
+      </td>
+    `;
+  },
+
+  openRegister(id){
+
+    this.activeRegId = id;
+
+    this.activeTableId = null;
+
+    this.go("register");
+  },
+
+  openTable(id){
+
+    this.activeTableId = id;
+
+    this.view = {
+      month:new Date().getMonth(),
+      day:null,
+      search:"",
+      sortStack:[],
+      filters:{},
+      selected:new Set()
+    };
+
+    this.go("table");
+  },
+
+  fab(){
+
+    if (
+      this.screen === "registers"
+    ){
+
+      this.openRegisterForm();
+
+      return;
+    }
+
+    if (
+      this.screen === "register"
+    ){
+
+      this.openTableForm();
+
+      return;
+    }
+
+    if (
+      this.screen === "table"
+    ){
+
+      this.openEntryForm();
+
+      return;
+    }
+  },
+
+  setFab(show){
+
+    const fab =
+      document.getElementById(
+        "fab"
+      );
+
+    fab.style.display =
+      show ? "flex" : "none";
+  },
+
+  updateTop(
+    title,
+    sub
+  ){
+
+    document.getElementById(
+      "topTitle"
+    ).textContent = title;
+
+    document.getElementById(
+      "topSub"
+    ).textContent = sub;
+  },
+
+  openRegisterForm(
+    existingId = null
+  ){
+
+    const existing =
+      existingId
+        ? Store.getReg(existingId)
+        : null;
+
+    this.sheetMode = "register";
+
+    this.draftEntry = {
+      existingId
+    };
+
+    this.openSheet(
+      existing
+        ? "Rename Register"
+        : "New Register"
+    );
+
+    document.getElementById(
+      "sheetBody"
+    ).innerHTML = `
+
+      <div class="field">
+
+        <div class="field-label">
+          Name
+        </div>
+
+        <input
+          id="regName"
+          class="txtin"
+          value="${esc(
+            existing?.name || ""
+          )}"
+          placeholder="Register name"
+          autofocus>
+
+      </div>
+
+      <div class="field">
+
+        <div class="field-label">
+          Year
+        </div>
+
+        <input
+          id="regYear"
+          class="valin"
+          type="number"
+          value="${
+            existing?.year ||
+            new Date().getFullYear()
+          }">
+
+      </div>
+    `;
+
+    this.sheetFooter(
+      "Save",
+      "saveSheet"
+    );
+  },
+
+  openTableForm(){
+
+    const reg =
+      Store.getReg(
+        this.activeRegId
+      );
+
+    if (!reg) return;
+
+    this.sheetMode = "table";
+
+    this.openSheet(
+      "New Table"
+    );
+
+    this.draftEntry = {
+      columns:[
+        {
+          id:"c_" + uid(),
+          name:"Name",
+          type:"text"
+        },
+        {
+          id:"c_" + uid(),
+          name:"Amount",
+          type:"number"
+        }
+      ]
+    };
+
+    this.renderNewTableForm();
+
+    this.sheetFooter(
+      "Create Table",
+      "saveSheet"
+    );
+  },
+
+  renderNewTableForm(){
+
+    const body =
+      document.getElementById(
+        "sheetBody"
+      );
+
+    body.innerHTML = `
+
+      <div class="field">
+
+        <div class="field-label">
+          Table name
+        </div>
+
+        <input
+          id="newTableName"
+          class="txtin"
+          placeholder="Example: Sales">
+
+      </div>
+
+      <div class="section-label">
+        Fields
+      </div>
+
+      <div
+        id="newTableColumns">
+      </div>
+
+      <button
+        class="tool-btn accent"
+        data-action="addNewTableColumn">
+        + Add Field
+      </button>
+
+    `;
+
+    this.renderNewTableColumns();
+  },
+
+  renderNewTableColumns(){
+
+    const box =
+      document.getElementById(
+        "newTableColumns"
+      );
+
+    if (!box) return;
+
+    const columns =
+      this.draftEntry.columns;
+
+    box.innerHTML =
+      columns.map(
+        (col,index) => `
+
+          <div class="column-manager">
+
+            <div class="column-manager-row">
+
+              <div class="cm-name">
+
+                <input
+                  data-new-col-name="${col.id}"
+                  value="${esc(col.name)}">
+
+              </div>
+
+              <div class="cm-type">
+                ${col.type}
+              </div>
+
+              ${
+                columns.length > 1
+                  ? `
+                    <button
+                      class="cm-btn danger"
+                      data-action="removeNewTableColumn"
+                      data-id="${col.id}">
+                      ×
+                    </button>
+                  `
+                  : ""
+              }
+
+            </div>
+
+          </div>
+        `
+      ).join("");
+
+    box
+      .querySelectorAll(
+        "[data-new-col-name]"
+      )
+      .forEach(
+        input => {
+
+          input.addEventListener(
+            "input",
+            () => {
+
+              const col =
+                this.draftEntry.columns
+                  .find(
+                    c =>
+                      c.id ===
+                      input.dataset.newColName
+                  );
+
+              if (col){
+                col.name =
+                  input.value;
+              }
+            }
+          );
+        }
+      );
+  },
+
+  openEntryForm(
+    entryId = null
+  ){
+
+    const reg =
+      Store.getReg(
+        this.activeRegId
+      );
+
+    const table =
+      Store.getTable(
+        this.activeRegId,
+        this.activeTableId
+      );
+
+    if (!reg || !table) return;
+
+    const existing =
+      entryId
+        ? table.entries.find(
+            e => e.id === entryId
+          )
+        : null;
+
+    this.sheetMode = "entry";
+
+    this.draftEntry = {
+      entryId,
+      date:
+        existing?.date ||
+        todayISO(),
+
+      values:
+        clone(
+          existing?.values || {}
+        )
+    };
+
+    this.openSheet(
+      existing
+        ? "Edit Entry"
+        : "New Entry"
+    );
+
+    this.renderEntryForm(
+      reg,
+      table
+    );
+
+    this.sheetFooter(
+      existing
+        ? "Update Entry"
+        : "Save Entry",
+      "saveSheet"
+    );
+  },
+
+  renderEntryForm(
+    reg,
+    table
+  ){
+
+    const body =
+      document.getElementById(
+        "sheetBody"
+      );
+
+    body.innerHTML = `
+
+      <div class="field">
+
+        <div class="field-label">
+          Date
+          <span class="field-type">
+            SYSTEM
+          </span>
+        </div>
+
+        <input
+          id="entryDate"
+          class="txtin"
+          type="date"
+          value="${esc(
+            this.draftEntry.date
+          )}">
+
+      </div>
+
+      ${
+        table.columns.map(
+          col =>
+            this.renderFormField(
+              reg,
+              table,
+              col
+            )
+        ).join("")
+      }
+
+    `;
+
+    body
+      .querySelectorAll(
+        "[data-form-col]"
+      )
+      .forEach(
+        input => {
+
+          const col =
+            table.columns.find(
+              c =>
+                c.id ===
+                input.dataset.formCol
+            );
+
+          if (!col) return;
+
+          input.addEventListener(
+            "input",
+            () => {
+
+              let value =
+                input.value;
+
+              if (
+                col.type === "number"
+              ){
+
+                value =
+                  value === ""
+                    ? ""
+                    : Number(value);
+              }
+
+              this.draftEntry
+                .values[col.id] =
+                value;
+
+              if (
+                input.matches(
+                  "[data-recent-field]"
+                )
+              ){
+
+                KeyboardRail.filter(
+                  input.value,
+                  col.name
+                );
+              }
+            }
+          );
+        }
+      );
+
+    body
+      .querySelectorAll(
+        "[data-link-field]"
+      )
+      .forEach(
+        select => {
+
+          select.addEventListener(
+            "change",
+            () => {
+
+              this.draftEntry.values[
+                select.dataset.linkField
+              ] =
+                select.value;
+            }
+          );
+        }
+      );
+  },
+
+  renderFormField(
+    reg,
+    table,
+    col
+  ){
+
+    const value =
+      this.draftEntry.values[
+        col.id
+      ] ?? "";
+
+    if (
+      col.type === "link"
+    ){
+
+      const target =
+        Store.getTable(
+          reg.id,
+          col.link?.tableId
+        );
+
+      if (!target){
+
+        return `
+
+          <div class="field">
+
+            <div class="field-label">
+              ${esc(col.name)}
+            </div>
+
+            <div class="cell-empty">
+              Link target unavailable
+            </div>
+
+          </div>
+        `;
+      }
+
+      const displayCol =
+        target.columns.find(
+          c =>
+            c.id ===
+            col.link?.colId
+        );
+
+      return `
+
+        <div class="field">
+
+          <div class="field-label">
+
+            ${esc(col.name)}
+
+            <span class="field-type">
+              LINK
+            </span>
+
+          </div>
+
+          <select
+            class="selectin"
+            data-link-field="${col.id}">
+
+            <option value="">
+              Select...
+            </option>
+
+            ${target.entries.map(
+              entry => {
+
+                const label =
+                  displayCol
+                    ? entry.values[
+                        displayCol.id
+                      ]
+                    : entry.id;
+
+                return `
+                  <option
+                    value="${entry.id}"
+                    ${
+                      String(value) ===
+                      String(entry.id)
+                        ? "selected"
+                        : ""
+                    }>
+                    ${esc(
+                      label || entry.id
+                    )}
+                  </option>
+                `;
+              }
+            ).join("")}
+
+          </select>
+
+        </div>
+
+      `;
+    }
+
+    const inputType =
+      col.type === "number"
+        ? "number"
+        : "text";
+
+    return `
+
+      <div class="field">
+
+        <div class="field-label">
+
+          ${esc(col.name)}
+
+          <span class="field-type">
+            ${col.type}
+          </span>
+
+        </div>
+
+        <input
+          class="${
+            col.type === "number"
+              ? "valin"
+              : "txtin"
+          }"
+          type="${inputType}"
+          value="${esc(value)}"
+          data-form-col="${col.id}"
+          data-recent-field="${esc(col.name)}"
+          data-recent-type="${col.type}"
+          autocomplete="off"
+          spellcheck="false"
+          placeholder="${
+            col.type === "number"
+              ? "0"
+              : "Enter " + col.name
+          }">
+
+      </div>
+    `;
+  },
+
+  openColumnManager(){
+
+    const table =
+      Store.getTable(
+        this.activeRegId,
+        this.activeTableId
+      );
+
+    if (!table) return;
+
+    this.sheetMode = "columns";
+
+    this.columnDraft =
+      clone(table.columns);
+
+    this.openSheet(
+      "Columns · " +
+      table.name
+    );
+
+    this.renderColumnManager();
+
+    this.sheetFooter(
+      "Save Columns",
+      "saveColumns"
+    );
+  },
+
+  renderColumnManager(){
+
+    const body =
+      document.getElementById(
+        "sheetBody"
+      );
+
+    body.innerHTML = `
+
+      <div class="column-manager">
+
+        <div class="column-manager-title">
+          Existing fields
+        </div>
+
+        ${
+          this.columnDraft.length
+            ? this.columnDraft.map(
+                col => `
+
+                  <div
+                    class="column-manager-row">
+
+                    <div class="cm-name">
+
+                      <input
+                        data-cm-name="${col.id}"
+                        value="${esc(
+                          col.name
+                        )}">
+
+                    </div>
+
+                    <div class="cm-type">
+                      ${col.type}
+                    </div>
+
+                    <button
+                      class="cm-btn"
+                      data-action="moveColumnUp"
+                      data-id="${col.id}">
+                      ↑
+                    </button>
+
+                    <button
+                      class="cm-btn"
+                      data-action="moveColumnDown"
+                      data-id="${col.id}">
+                      ↓
+                    </button>
+
+                    <button
+                      class="cm-btn danger"
+                      data-action="removeDraftColumn"
+                      data-id="${col.id}">
+                      ×
+                    </button>
+
+                  </div>
+
+                `
+              ).join("")
+            : `
+              <div class="history-empty">
+                No fields.
+              </div>
+            `
+        }
+
+      </div>
+
+      <div class="add-column-box">
+
+        <div class="column-manager-title">
+          Add field
+        </div>
+
+        <div class="add-column-grid">
+
+          <input
+            id="newColumnName"
+            placeholder="Field name">
+
+          <select id="newColumnType">
+
+            <option value="text">
+              Text
+            </option>
+
+            <option value="number">
+              Number
+            </option>
+
+            <option value="link">
+              Link
+            </option>
+
+          </select>
+
+        </div>
+
+        <div
+          class="link-config hidden"
+          id="newLinkConfig">
+
+          <select id="newLinkTable">
+            <option value="">
+              Target table
+            </option>
+          </select>
+
+          <select id="newLinkColumn">
+            <option value="">
+              Display field
+            </option>
+          </select>
+
+        </div>
+
+        <button
+          class="tool-btn accent"
+          style="margin-top:8px"
+          data-action="addDraftColumn">
+          + Add Field
+        </button>
+
+      </div>
+
+      <div class="export-note">
+
+        Date is a system field and is always kept
+        separately from custom fields.
+
+      </div>
+    `;
+
+    const nameInputs =
+      body.querySelectorAll(
+        "[data-cm-name]"
+      );
+
+    nameInputs.forEach(
+      input => {
+
+        input.addEventListener(
+          "input",
+          () => {
+
+            const col =
+              this.columnDraft.find(
+                c =>
+                  c.id ===
+                  input.dataset.cmName
+              );
+
+            if (col){
+              col.name =
+                input.value;
+            }
+          }
+        );
+      }
+    );
+
+    const typeSelect =
+      document.getElementById(
+        "newColumnType"
+      );
+
+    typeSelect.addEventListener(
+      "change",
+      () => {
+
+        document
+          .getElementById(
+            "newLinkConfig"
+          )
+          .classList.toggle(
+            "hidden",
+            typeSelect.value !== "link"
+          );
+
+        if (
+          typeSelect.value === "link"
+        ){
+          this.populateLinkTargets();
+        }
+      }
+    );
+  },
+
+  populateLinkTargets(){
+
+    const reg =
+      Store.getReg(
+        this.activeRegId
+      );
+
+    const table =
+      Store.getTable(
+        this.activeRegId,
+        this.activeTableId
+      );
+
+    const select =
+      document.getElementById(
+        "newLinkTable"
+      );
+
+    if (!select) return;
+
+    select.innerHTML = `
+
+      <option value="">
+        Target table
+      </option>
+
+      ${reg.tables
+        .filter(
+          t => t.id !== table.id
+        )
+        .map(
+          t => `
+            <option value="${t.id}">
+              ${esc(t.name)}
+            </option>
+          `
+        ).join("")}
+
+    `;
+
+    select.onchange = () => {
+
+      const target =
+        Store.getTable(
+          reg.id,
+          select.value
+        );
+
+      const colSelect =
+        document.getElementById(
+          "newLinkColumn"
+        );
+
+      if (!target){
+
+        colSelect.innerHTML =
+          `<option value="">
+            Display field
+          </option>`;
+
+        return;
+      }
+
+      colSelect.innerHTML = `
+
+        <option value="">
+          Display field
+        </option>
+
+        ${target.columns.map(
+          c => `
+            <option value="${c.id}">
+              ${esc(c.name)}
+            </option>
+          `
+        ).join("")}
+
+      `;
+    };
+  },
+
+  addDraftColumn(){
+
+    const nameInput =
+      document.getElementById(
+        "newColumnName"
+      );
+
+    const typeInput =
+      document.getElementById(
+        "newColumnType"
+      );
+
+    const name =
+      nameInput.value.trim();
+
+    if (!name){
+
+      toast(
+        "Field name required"
+      );
+
+      return;
+    }
+
+    const duplicate =
+      this.columnDraft.some(
+        c =>
+          c.name
+            .trim()
+            .toLowerCase() ===
+          name.toLowerCase()
+      );
+
+    if (duplicate){
+
+      toast(
+        "Field already exists"
+      );
+
+      return;
+    }
+
+    const type =
+      typeInput.value;
+
+    const col = {
+
+      id:"c_" + uid(),
+
+      name,
+
+      type
+    };
+
+    if (type === "link"){
+
+      const tableId =
+        document.getElementById(
+          "newLinkTable"
+        ).value;
+
+      const colId =
+        document.getElementById(
+          "newLinkColumn"
+        ).value;
+
+      if (!tableId || !colId){
+
+        toast(
+          "Select Link target"
+        );
+
+        return;
+      }
+
+      col.link = {
+        tableId,
+        colId,
+        display:"dropdown"
+      };
+    }
+
+    this.columnDraft.push(col);
+
+    this.renderColumnManager();
+  },
+
+  moveDraftColumn(
+    id,
+    direction
+  ){
+
+    const index =
+      this.columnDraft.findIndex(
+        c => c.id === id
+      );
+
+    if (index < 0) return;
+
+    const next =
+      index + direction;
+
+    if (
+      next < 0 ||
+      next >= this.columnDraft.length
+    ){
+      return;
+    }
+
+    const temp =
+      this.columnDraft[index];
+
+    this.columnDraft[index] =
+      this.columnDraft[next];
+
+    this.columnDraft[next] =
+      temp;
+
+    this.renderColumnManager();
+  },
+
+  removeDraftColumn(id){
+
+    if (
+      this.columnDraft.length <= 1
+    ){
+
+      toast(
+        "At least one field is required"
+      );
+
+      return;
+    }
+
+    this.columnDraft =
+      this.columnDraft.filter(
+        c => c.id !== id
+      );
+
+    this.renderColumnManager();
+  },
+
+  saveColumns(){
+
+    const ok =
+      Store.applySchema(
+        this.activeRegId,
+        this.activeTableId,
+        this.columnDraft
+      );
+
+    if (!ok) return;
+
+    this.closeSheet();
+
+    this.renderTable();
+
+    toast(
+      "Columns updated"
+    );
+  },
+
+  openSheet(title){
+
+    document.getElementById(
+      "sheetTitle"
+    ).textContent = title;
+
+    document.getElementById(
+      "sheetBackdrop"
+    ).classList.add("show");
+  },
+
+  sheetFooter(
+    label,
+    action
+  ){
+
+    document.getElementById(
+      "sheetFooter"
+    ).innerHTML = `
+
+      <button
+        class="secondary-btn"
+        data-action="closeSheet">
+        Cancel
+      </button>
+
+      <button
+        class="primary-btn"
+        data-action="${action}">
+        ${esc(label)}
+      </button>
+    `;
+  },
+
+  closeSheet(){
+
+    document.getElementById(
+      "sheetBackdrop"
+    ).classList.remove("show");
+
+    document.getElementById(
+      "sheetBody"
+    ).innerHTML = "";
+
+    document.getElementById(
+      "sheetFooter"
+    ).innerHTML = "";
+
+    this.sheetMode = null;
+    this.draftEntry = null;
+    this.columnDraft = null;
+
+    KeyboardRail.hide();
+  },
+
+  saveSheet(){
+
+    if (
+      this.sheetMode ===
+      "register"
+    ){
+
+      const name =
+        document.getElementById(
+          "regName"
+        ).value.trim();
+
+      const year =
+        Number(
+          document.getElementById(
+            "regYear"
+          ).value
+        );
+
+      if (!name){
+
+        toast(
+          "Register name required"
+        );
+
+        return;
+      }
+
+      if (
+        this.draftEntry.existingId
+      ){
+
+        const reg =
+          Store.getReg(
+            this.draftEntry.existingId
+          );
+
+        reg.name = name;
+        reg.year =
+          Number.isFinite(year)
+            ? year
+            : reg.year;
+
+        Store.save();
+
+        this.closeSheet();
+
+        this.render();
+
+        toast(
+          "Register updated"
+        );
+
+        return;
+      }
+
+      const reg =
+        Store.createRegister(
+          name,
+          year
+        );
+
+      this.activeRegId =
+        reg.id;
+
+      this.closeSheet();
+
+      this.go("register");
+
+      return;
+    }
+
+    if (
+      this.sheetMode ===
+      "table"
+    ){
+
+      const name =
+        document.getElementById(
+          "newTableName"
+        ).value.trim();
+
+      if (!name){
+
+        toast(
+          "Table name required"
+        );
+
+        return;
+      }
+
+      const validColumns =
+        this.draftEntry.columns.filter(
+          c =>
+            c.name.trim()
+        );
+
+      if (!validColumns.length){
+
+        toast(
+          "At least one field required"
+        );
+
+        return;
+      }
+
+      const table =
+        Store.createTable(
+          this.activeRegId,
+          name,
+          validColumns
+        );
+
+      if (!table) return;
+
+      this.activeTableId =
+        table.id;
+
+      this.closeSheet();
+
+      this.go("table");
+
+      toast(
+        "Table created"
+      );
+
+      return;
+    }
+
+    if (
+      this.sheetMode ===
+      "entry"
+    ){
+
+      const date =
+        document.getElementById(
+          "entryDate"
+        ).value;
+
+      if (!date){
+
+        toast(
+          "Date required"
+        );
+
+        return;
+      }
+
+      const table =
+        Store.getTable(
+          this.activeRegId,
+          this.activeTableId
+        );
+
+      if (!table) return;
+
+      for (
+        const col of table.columns
+      ){
+
+        if (
+          col.type === "number"
+        ){
+
+          const value =
+            this.draftEntry.values[
+              col.id
+            ];
+
+          if (
+            value !== "" &&
+            value !== undefined &&
+            !Number.isFinite(
+              Number(value)
+            )
+          ){
+
+            toast(
+              col.name +
+              " must be a number"
+            );
+
+            return;
+          }
+        }
+      }
+
+      if (
+        this.draftEntry.entryId
+      ){
+
+        Store.updateEntry(
+          this.activeRegId,
+          this.activeTableId,
+          this.draftEntry.entryId,
+          {
+            date,
+            values:
+              this.draftEntry.values
+          }
+        );
+
+        toast(
+          "Entry updated"
+        );
+
+      }else{
+
+        Store.addEntry(
+          this.activeRegId,
+          this.activeTableId,
+          date,
+          this.draftEntry.values
+        );
+
+        toast(
+          "Entry saved"
+        );
+      }
+
+      this.closeSheet();
+
+      this.renderTable();
+
+      return;
+    }
+  },
+
+  editCell(el){
+
+    const entryId =
+      el.dataset.id;
+
+    const colId =
+      el.dataset.col;
+
+    const table =
+      Store.getTable(
+        this.activeRegId,
+        this.activeTableId
+      );
+
+    if (!table) return;
+
+    const entry =
+      table.entries.find(
+        e => e.id === entryId
+      );
+
+    if (!entry) return;
+
+    if (
+      el.dataset.dateCell
+    ){
+
+      this.openEntryForm(
+        entryId
+      );
+
+      return;
+    }
+
+    if (!colId) return;
+
+    const col =
+      table.columns.find(
+        c => c.id === colId
+      );
+
+    if (!col) return;
+
+    if (
+      col.type === "link"
+    ){
+
+      this.openEntryForm(
+        entryId
+      );
+
+      return;
+    }
+
+    const current =
+      entry.values[colId] ?? "";
+
+    const input =
+      document.createElement(
+        "input"
+      );
+
+    input.className =
+      "inline-edit";
+
+    input.type =
+      col.type === "number"
+        ? "number"
+        : "text";
+
+    input.value =
+      current;
+
+    el.innerHTML = "";
+
+    el.appendChild(input);
+
+    input.focus();
+
+    input.select();
+
+    const save = () => {
+
+      let value =
+        input.value;
+
+      if (
+        col.type === "number"
+      ){
+
+        value =
+          value === ""
+            ? ""
+            : Number(value);
+
+        if (
+          value !== "" &&
+          !Number.isFinite(value)
+        ){
+
+          toast(
+            "Invalid number"
+          );
+
+          this.renderTable();
+
+          return;
+        }
+      }
+
+      Store.updateEntry(
+        this.activeRegId,
+        this.activeTableId,
+        entryId,
+        {
+          values:{
+            [colId]:value
+          }
+        }
+      );
+
+      this.renderTable();
+
+    };
+
+    input.addEventListener(
+      "blur",
+      save,
+      {once:true}
+    );
+
+    input.addEventListener(
+      "keydown",
+      event => {
+
+        if (
+          event.key === "Enter"
+        ){
+
+          event.preventDefault();
+
+          input.blur();
+        }
+
+        if (
+          event.key === "Escape"
+        ){
+
+          input.removeEventListener(
+            "blur",
+            save
+          );
+
+          this.renderTable();
+        }
+      }
+    );
+  },
+
+  toggleRow(id){
+
+    if (
+      this.view.selected.has(id)
+    ){
+
+      this.view.selected.delete(id);
+
+    }else{
+
+      this.view.selected.add(id);
+    }
+
+    this.renderTable();
+  },
+
+  confirm(
+    title,
+    text,
+    callback
+  ){
+
+    this.pendingConfirm =
+      callback;
+
+    document.getElementById(
+      "modalTitle"
+    ).textContent =
+      title;
+
+    document.getElementById(
+      "modalText"
+    ).textContent =
+      text;
+
+    document.getElementById(
+      "modalBackdrop"
+    ).classList.add("show");
+  },
+
+  closeModal(){
+
+    document.getElementById(
+      "modalBackdrop"
+    ).classList.remove("show");
+
+    this.pendingConfirm =
+      null;
+  },
+
+  runConfirm(){
+
+    const callback =
+      this.pendingConfirm;
+
+    this.closeModal();
+
+    if (callback){
+      callback();
+    }
+  },
+
+  renameTable(){
+
+    const table =
+      Store.getTable(
+        this.activeRegId,
+        this.activeTableId
+      );
+
+    if (!table) return;
+
+    this.sheetMode =
+      "rename-table";
+
+    this.openSheet(
+      "Rename Table"
+    );
+
+    document.getElementById(
+      "sheetBody"
+    ).innerHTML = `
+
+      <div class="field">
+
+        <div class="field-label">
+          Table name
+        </div>
+
+        <input
+          id="renameTableInput"
+          class="txtin"
+          value="${esc(table.name)}">
+
+      </div>
+    `;
+
+    this.sheetFooter(
+      "Save",
+      "saveRenameTable"
+    );
+  },
+
+  duplicateTable(){
+
+    const reg =
+      Store.getReg(
+        this.activeRegId
+      );
+
+    const source =
+      Store.getTable(
+        this.activeRegId,
+        this.activeTableId
+      );
+
+    if (!reg || !source) return;
+
+    const newTable =
+      Store.createTable(
+        reg.id,
+        source.name + " Copy",
+        clone(source.columns)
+      );
+
+    if (!newTable) return;
+
+    source.entries.forEach(
+      entry => {
+
+        Store.addEntry(
+          reg.id,
+          newTable.id,
+          entry.date,
+          clone(entry.values)
+        );
+      }
+    );
+
+    this.activeTableId =
+      newTable.id;
+
+    this.renderTable();
+
+    toast(
+      "Table duplicated"
+    );
+  },
+
+  openGlobalMenu(){
+
+    this.sheetMode =
+      "global";
+
+    this.openSheet(
+      "LASER DATA"
+    );
+
+    document.getElementById(
+      "sheetBody"
+    ).innerHTML = `
+
+      <div class="toolbar">
+
+        <button
+          class="tool-btn"
+          data-action="exportBackup">
+          Export Backup
+        </button>
+
+        <button
+          class="tool-btn"
+          data-action="importBackup">
+          Restore Backup
+        </button>
+
+      </div>
+
+      <div class="export-note">
+
+        Backup contains local registers,
+        tables, entries and recent-value history.
+
+        No server is used.
+
+      </div>
+    `;
+
+    document.getElementById(
+      "sheetFooter"
+    ).innerHTML = `
+
+      <button
+        class="secondary-btn"
+        data-action="closeSheet">
+        Close
+      </button>
+    `;
+  },
+
+  importBackup(){
+
+    const input =
+      document.createElement(
+        "input"
+      );
+
+    input.type = "file";
+    input.accept =
+      ".json,application/json";
+
+    input.onchange =
+      async () => {
+
+        const file =
+          input.files?.[0];
+
+        if (!file) return;
+
+        this.confirm(
+          "Restore backup?",
+          "Current local data will be replaced by the selected backup.",
+          async () => {
+
+            try{
+
+              await Store.importBackup(
+                file
+              );
+
+              this.activeRegId = null;
+              this.activeTableId = null;
+
+              this.closeSheet();
+
+              this.go(
+                "registers"
+              );
+
+              toast(
+                "Backup restored"
+              );
+
+            }catch(error){
+
+              console.error(
+                error
+              );
+
+              toast(
+                "Invalid backup"
+              );
+            }
+          }
+        );
+      };
+
+    input.click();
+  },
+
+  /* =======================================================
+     RENAME TABLE
+     ======================================================= */
+
+  saveRenameTable(){
+
+    const input =
+      document.getElementById(
+        "renameTableInput"
+      );
+
+    const name =
+      input.value.trim();
+
+    if (!name){
+
+      toast(
+        "Table name required"
+      );
+
+      return;
+    }
+
+    const table =
+      Store.getTable(
+        this.activeRegId,
+        this.activeTableId
+      );
+
+    if (!table) return;
+
+    table.name = name;
+
+    Store.save();
+
+    this.closeSheet();
+
+    this.renderTable();
+
+    toast(
+      "Table renamed"
+    );
+  },
+
+  exportPDF(){
+
+    const reg =
+      Store.getReg(
+        this.activeRegId
+      );
+
+    const table =
+      Store.getTable(
+        this.activeRegId,
+        this.activeTableId
+      );
+
+    if (!reg || !table) return;
+
+    const rows =
+      this.getFilteredRows();
+
+    const generated =
+      new Date();
+
+    const generatedDate =
+      [
+        generated.getFullYear(),
+        pad2(
+          generated.getMonth()+1
+        ),
+        pad2(
+          generated.getDate()
+        )
+      ].join("-");
+
+    const html = `
+
+      <div id="pdfPrintRoot">
+
+        <div class="pdf-title">
+          ${esc(reg.name)}
+          — ${esc(table.name)}
+        </div>
+
+        <div class="pdf-meta">
+
+          Year ${reg.year}
+          · ${MONTHS_F[
+              this.view.month
+            ]}
+
+          ${
+            this.view.day !== null
+              ? " · Day " +
+                this.view.day
+              : ""
+          }
+
+          · ${rows.length} rows
+
+          · Generated ${generatedDate}
+
+        </div>
+
+        <table>
+
+          <thead>
+
+            <tr>
+
+              <th>
+                #
+              </th>
+
+              <th>
+                Date
+              </th>
+
+              ${table.columns.map(
+                col => `
+
+                  <th>
+                    ${esc(col.name)}
+                  </th>
+
+                `
+              ).join("")}
+
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+            ${
+              rows.length
+                ? rows.map(
+                    (entry,index) => `
+
+                      <tr>
+
+                        <td>
+                          ${index + 1}
+                        </td>
+
+                        <td>
+                          ${formatDateShort(
+                            entry.date
+                          )}
+                        </td>
+
+                        ${table.columns.map(
+                          col => {
+
+                            const value =
+                              entry.values[
+                                col.id
+                              ] ?? "";
+
+                            const display =
+                              col.type ===
+                              "number"
+                                ? num(value)
+                                : String(
+                                    value
+                                  );
+
+                            return `
+
+                              <td
+                                class="${
+                                  col.type ===
+                                  "number"
+                                    ? "pdf-number"
+                                    : ""
+                                }">
+
+                                ${esc(
+                                  display
+                                )}
+
+                              </td>
+
+                            `;
+                          }
+                        ).join("")}
+
+                      </tr>
+
+                    `
+                  ).join("")
+                : `
+
+                  <tr>
+
+                    <td
+                      colspan="${
+                        table.columns.length + 2
+                      }">
+
+                      No matching entries
+
+                    </td>
+
+                  </tr>
+
+                `
+            }
+
+          </tbody>
+
+        </table>
+
+      </div>
+    `;
+
+    const old =
+      document.getElementById(
+        "pdfPrintRoot"
+      );
+
+    if (old){
+      old.remove();
+    }
+
+    document.body.insertAdjacentHTML(
+      "beforeend",
+      html
+    );
+
+    setTimeout(
+      () => {
+
+        window.print();
+
+        setTimeout(
+          () => {
+
+            const root =
+              document.getElementById(
+                "pdfPrintRoot"
+              );
+
+            if (root){
+              root.remove();
+            }
+
+          },
+          1200
+        );
+
+      },
+      200
+    );
+  }
+};
+
+/* =========================================================
+   NEW TABLE EXTRA ACTIONS
+   ========================================================= */
+
+document.addEventListener(
+  "click",
+  event => {
+
+    const action =
+      event.target.closest(
+        "[data-action]"
+      )?.dataset.action;
+
+    if (!action) return;
+
+    if (
+      action ===
+      "addNewTableColumn"
+    ){
+
+      if (
+        App.sheetMode !==
+        "table"
+      ){
+        return;
+      }
+
+      App.draftEntry.columns.push({
+
+        id:"c_" + uid(),
+
+        name:"Field " +
+          (
+            App.draftEntry.columns.length +
+            1
+          ),
+
+        type:"text"
+      });
+
+      App.renderNewTableColumns();
+    }
+
+    if (
+      action ===
+      "removeNewTableColumn"
+    ){
+
+      App.draftEntry.columns =
+        App.draftEntry.columns.filter(
+          c =>
+            c.id !==
+            event.target.closest(
+              "[data-action]"
+            ).dataset.id
+        );
+
+      App.renderNewTableColumns();
+    }
+
+    if (
+      action ===
+      "saveRenameTable"
+    ){
+
+      App.saveRenameTable();
+    }
+  }
+);
+
+/* =========================================================
+   SHEET BACKDROP CLICK
+   ========================================================= */
+
+document
+  .getElementById(
+    "sheetBackdrop"
+  )
+  .addEventListener(
+    "click",
+    event => {
+
+      if (
+        event.target.id ===
+        "sheetBackdrop"
+      ){
+
+        App.closeSheet();
+      }
+    }
+  );
+
+/* =========================================================
+   MODAL BACKDROP CLICK
+   ========================================================= */
+
+document
+  .getElementById(
+    "modalBackdrop"
+  )
+  .addEventListener(
+    "click",
+    event => {
+
+      if (
+        event.target.id ===
+        "modalBackdrop"
+      ){
+
+        App.closeModal();
+      }
+    }
+  );
+
+/* =========================================================
+   BOOT
+   ========================================================= */
+
+App.init();
+
+</script>
+
+</body>
+</html>
